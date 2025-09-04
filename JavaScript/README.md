@@ -21,5 +21,5 @@ Note: The data needs to be unzipped before it can be uploaded interactively by t
 
 ## Some snapshots
 
-[<img alt="alt_text" width="40px" src="localhost.png" />](https://www.google.com/)
-[<img alt="alt_text" width="40px" src="utilities.png" />](https://www.google.com/)
+[<img alt="alt_text" width="500px" src="localhost.png" />]()
+[<img alt="alt_text" width="500px" src="utilities.png" />]()

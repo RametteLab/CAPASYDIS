@@ -47,8 +47,8 @@ See then the *help* for further instructions about the possible flags and parame
 
 
 ## Disclaimer
-a) This is my first Golang project. The code base and code structure will most likely need some revision.
-b) The scripts have been developed to be used on a Linux servers.
+a) This is my first Golang project. The code base and code structure will most likely need some revision.   
+b) The scripts have been developed to be used on Linux servers.
 Other operating systems have not been tested. 
 
 ## Could be done next:

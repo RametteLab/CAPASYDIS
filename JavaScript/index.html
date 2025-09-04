@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+  <title>Capasydis display</title>
+    <style>
+  .colorful-text span {
+      color: hsl(0, 100%, 0); /* Start with black */
+      font-size: 30px; /* Set the desired font size for the letters */
+      position: relative; /* Allow positioning of each letter */
+    }
+ .colorful-text {
+      font-size: 0; /* Remove space between spans */
+    }
+
+
+  .colorful-text span:nth-child(1) { color: hsl(0, 100%, 0); } /* Black */
+  .colorful-text span:nth-child(2) { color: hsl(0, 100%, 50%); } /* Red */
+  .colorful-text span:nth-child(3) { color: hsl(30, 100%, 50%); } /* Orange */
+  .colorful-text span:nth-child(4) { color: hsl(280, 100%, 50%); } /* Indigo */
+  .colorful-text span:nth-child(5) { color: hsl(120, 100%, 50%); } /* Green */
+  .colorful-text span:nth-child(6) { color: hsl(240, 100%, 50%); } /* Blue */
+  .colorful-text span:nth-child(7) { color: hsl(280, 100%, 50%); } /* Indigo */
+  .colorful-text span:nth-child(8) { color: hsl(330, 100%, 50%); } /* Violet */ 
+  </style>
+  <style>
+        table,
+        td,
+        th {
+            border: 1px solid;
+            padding: 20px;
+        }
+
+        table {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>
+<div class="colorful-text">
+  <span>Capasydis </span>
+  <span>D</span>
+  <span>i</span>
+  <span>s</span>
+  <span>p</span>
+  <span>l</span>
+  <span>a</span>
+  <span>y</span>
+</div>
+</h1>
+
+<details>
+  <summary>
+    <b>Instructions</b>
+  </summary>
+ <p>
+<p>To run the scripts in Windows, the files `main.go` and `server.go must be in the same folder.</p>
+<p>Then start the server in the dos console with:</p>
+<pre>`go run main.go`</pre>
+or if you already did `go build main.go`
+then launching or clicking on "main.exe" will suffice.
+<p>If the message "server listening on port 8080..." appears in the console, you are all set. This runs a server instance on port 8080.</p>
+<p>Go to a local web browser at http://localhost:8080/ and the plotting  utilities listed below should be available.</p>
+<p><i>Note:</i> The CAPASYDIS asymdist .csv files must start with the line <span style="color: red;">x,y,label,color</span> to be correctly parsed by the scripts.</p><p>If a third coordinate is provided, such as (x,y,<span style="color: red;">z</span>,label,color), then the z variable is ignored for the 2D plots.</p>
+</p> 
+</details>
+
+
+<details>
+  <summary>
+    <b>Utilities</b>
+  </summary>
+ <p>
+  <table border="1">
+    <thead>
+      <tr>
+		<th>Status</th>
+        <th>Name</th>
+		<th>Description</th>
+		<th>Data loading</th>
+		<th>Zoom</th>
+		<th>Point color</th>
+		<th>Point size modifiable</th>
+		<th>Information on mouseover</th>
+		<th>Preview</th>
+      </tr>
+    </thead>
+    <tbody>
+	  </tr>
+    <tr><!-- -------------------------------------------------------------- -->
+      <td><p style="color: green">&#x2714;</p></td>
+      <td><a href="./utilities/zoom_color_choice_ptsize_contour_bandsize_v2.html">contours</a></td>
+      <td>Plot one color at the time. Reads only "x,y,color,label". With contour and adjustable bandwith option. Mouseover + click to print the label. </td><!-- Description-->
+      <td><p style="color: green">selection</p></td><!-- Data loading-->
+      <td>Input box</td><!-- Zoom-->
+      <td><p style="color: green">&#x2714;</p></td><!--Point color -->
+      <td><p style="color: green">&#x2714;</p></td><!-- Point size-->
+      <td><p style="color: green">&#x2714;</p></td><!-- mouseover-->
+        <td><img src="images/zoom_color_choice_ptsize_contour_bandsize.png"</a></td><!-- thumbnail-->
+         </tr><!-- -------------------------------------------------------------- -->
+         <tr><!-- -------------------------------------------------------------- -->
+          <td><p style="color: green">&#x2714;</p></td>
+          <td><a href="./utilities/hull01.html">hulls</a></td>
+          <td>Plot multiple color selections. Reads only "x,y,color,label". Displays colored hulls and prints areas. Mouseover + click to print the label. </td><!-- Description-->
+          <td><p style="color: green">selection</p></td><!-- Data loading-->
+          <td>Input box</td><!-- Zoom-->
+          <td><p style="color: green">&#x2714;</p></td><!--Point color -->
+          <td><p style="color: green">&#x2714;</p></td><!-- Point size-->
+          <td><p style="color: green">&#x2714;</p></td><!-- mouseover-->
+            <td><img src="images/hull01.png"</a></td><!-- thumbnail-->
+             </tr><!-- -------------------------------------------------------------- -->
+
+             <tr><!-- -------------------------------------------------------------- -->
+              <td><p style="color: green">&#x2714;</p></td>
+              <td><a href="./utilities/plot3D_v3.html">3D</a></td>
+              <td>Plot the points in 3D. Interactive mouse zooming and rescaling. </td><!-- Description-->
+              <td><p style="color: green">selection</p></td><!-- Data loading-->
+              <td>Mouse roll</td><!-- Zoom-->
+              <td><p style="color: green">&#x2714;</p></td><!--Point color -->
+              <td><p style="color: red">&#x2716;</p></td><!--Point size -->
+              <td><p style="color: red">&#x2716;</p></td><!-- mouseover-->
+                <td><img src="images/Picture3D.png"</a></td><!-- thumbnail-->
+                 </tr><!-- -------------------------------------------------------------- -->
+
+
+	  </tr><!-- -------------------------------------------------------------- -->
+	     <tr><!-- -------------------------------------------------------------- -->
+		<td><p style="color: black"></p>....</td> <!--Status -->
+        <td>....</td><!--Filename -->
+		<td>...</td><!-- Description-->
+		<td>...</td><!-- Data loading-->
+		<td>...</td><!-- Zoom-->
+		<td>...</td><!--Point color -->
+		<td>...</td><!-- Point size-->
+		<td>...</td><!-- mouseover-->
+		<td>...</td><!-- thumbnail-->
+
+	  </tr><!-- -------------------------------------------------------------- -->
+	</tbody>
+  </table>
+  
+  
+</body>
+</html> 

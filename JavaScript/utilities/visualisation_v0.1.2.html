@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Visualization v.0.1.1</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3-contour.v3.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }.point {
+      fill-opacity: 0.8;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      border: 1px solid black;
+      padding: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      display: none;
+    }
+    /* #text-area {
+      position: absolute;
+      top: 550px;
+      right: 400px;
+      width: 750px;
+      border: 0px solid #ccc;
+      padding: 0px;
+      font-size: 12px;
+    } */
+      #chart {
+        position: relative; /* Important for absolute positioning of text-area */
+    }
+  
+    #controls {
+      margin-bottom: 10px; /* Space between controls and chart */
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <button id="zoom-in">+</button>
+    <button id="zoom-out">-</button>
+    <label for="point-size">Point size:</label>
+    <input type="number" id="point-size" value="2" min="1" step="1">
+    <input type="file" id="csvFile" accept=".csv">
+    <button id="load-data-button">Plot Data!</button>
+  </div>
+  <div id="chart"></div>
+  <div class="tooltip"></div>
+  <!-- <div id="text-area"></div> -->
+  <!-- #####################################################  -->
+  <script>
+    // const margin = { top: 20, right: 180, bottom: 40, left: 50 };
+    const margin = { top: 20, right: 100, bottom: 40, left: 50 };
+    const width = 800 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+    let currentData = []; // Store the current data
+    let svg; // Store the SVG element globally
+    let circles; // Store the circles selection globally
+
+
+    // --- Function to create/update the plot ---
+    function createPlot(data) {
+      currentData = data; // Update the global data
+
+        // Clear previous plot elements, ONLY if svg exists
+        if (svg) {
+            svg.remove();
+        }
+
+      // Create SVG
+      svg = d3.select("#chart")  // Assign to the global svg variable
+        .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .style("background-color", "lightgrey")
+        .append("g")
+          .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+      // Scales
+      let xScale = d3.scaleLinear()
+        // .domain([0,1])
+        .domain([d3.min(data, d => d.x), d3.max(data, d => d.x)])
+        .range([0, width]);
+
+      let yScale = d3.scaleLinear()
+        .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
+        // .domain([0,1])
+        .range([height, 0]);
+
+      // Axes
+      let xAxis = d3.axisBottom(xScale);
+      let yAxis = d3.axisLeft(yScale);
+
+      // Add x-axis
+      const gX = svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(xAxis);
+
+      // Add x-axis label
+        svg.append("text")
+          .attr("transform", `translate(${width/2}, ${height + margin.bottom -5})`)
+          .style("text-anchor", "middle")
+          .attr("font-size","12px")
+          .text("REF1-axis");
+
+      // Add y-axis
+      const gY = svg.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis);
+
+      //Add Y axis label
+        svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left-2)
+              .attr("x", 0 - (height / 2)) // vertical
+              .attr("dy", "1em")
+              .style("text-anchor", "middle")
+              .attr("font-size","12px")
+              .text("REF2-axis");
+
+      // Tooltip
+      const tooltip = d3.select(".tooltip");
+
+      // Text area
+      // const textArea = d3.select("#text-area");
+
+
+      // Add circles
+      circles = svg.selectAll(".dot") // Assign to the global circles variable
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => xScale(d.x))
+        .attr("cy", d => yScale(d.y))
+        .attr("r", +d3.select("#point-size").property("value")) // Use current size
+        .attr("fill", d => d.color)
+        .on("mouseover", function(event, d) {
+            tooltip.style("display", "block");
+            tooltip.html(`x: ${d.x}<br>y: ${d.y}<br>label: ${d.label}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            textArea.html(`x: ${d.x}<br>y: ${d.y}<br>label: ${d.label}`);
+            d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
+        })
+        .on("mouseout", function(event, d) {
+            tooltip.style("display", "none");
+            textArea.html("");
+            d3.select(this).attr("stroke", "none");
+        });
+
+
+        // Zoom functionality
+        const zoom = d3.zoom()
+            .scaleExtent([1, 8])
+            .on("zoom", (event) => {
+                const newXScale = event.transform.rescaleX(xScale);
+                const newYScale = event.transform.rescaleY(yScale);
+                gX.call(xAxis.scale(newXScale));
+                gY.call(yAxis.scale(newYScale));
+                circles.attr("cx", d => newXScale(d.x))
+                    .attr("cy", d => newYScale(d.y));
+            });
+
+        svg.call(zoom); // Apply zoom to the SVG group
+
+
+        // Zoom button event listeners
+        d3.select("#zoom-in").on("click", function() {
+           svg.transition().duration(350).call(zoom.scaleBy, 1.2);
+        });
+
+        d3.select("#zoom-out").on("click", function() {
+           svg.transition().duration(350).call(zoom.scaleBy, 0.8);
+        });
+
+    }
+   // --- Event listener for point-size input ---
+    d3.select("#point-size").on("input", function() {
+        const newSize = +this.value; // Get the value and convert to number
+         if (circles) { // Check if circles exist
+            circles.attr("r", newSize); // Update the radius of all circles
+        }
+    });
+
+    // --- Load Data Button Event Listener ---
+    d3.select("#load-data-button").on("click", function() {
+        const fileInput = document.getElementById("csvFile");
+        const file = fileInput.files[0];
+
+        if (file) {
+            // Load from selected file
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const csvData = d3.csvParse(event.target.result);
+                csvData.forEach(d => {
+                  d.x = +d.x;
+                  d.y = +d.y;
+                });
+                createPlot(csvData);
+            };
+             reader.readAsText(file);
+        }
+    });
+
+  </script>
+
+</body>
+</html>

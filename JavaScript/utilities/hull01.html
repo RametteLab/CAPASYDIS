@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3.js Scatterplot with Convex Hull</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: sans-serif; }
+    #scatterplot { border: 1px solid #ccc; }
+    .hull { fill: none; stroke-width: 2px; }
+    #areaInfo {
+      position: absolute;
+      top: 50px;
+      left: 620px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <label for="csvFile">Load CSV:</label>
+  <input type="file" id="csvFile" accept=".csv"><br><br>
+
+  <label for="xmin">X Min:</label>
+  <input type="number" id="xmin" value="0" style="width: 60px;">
+  <label for="xmax">X Max:</label>
+  <input type="number" id="xmax" value="10" style="width: 60px;">
+  <label for="ymin">Y Min:</label>
+  <input type="number" id="ymin" value="0" style="width: 60px;">
+  <label for="ymax">Y Max:</label>
+  <input type="number" id="ymax" value="10" style="width: 60px;"><br><br>
+
+  <label for="pointSize">Point Size:</label>
+  <input type="number" id="pointSize" value="5" style="width: 60px;"><br><br>
+
+  <label for="pointColors">Point Colors:</label>
+  <select id="pointColors" multiple></select><br><br>
+
+  <label for="hullColors">Hull Colors:</label>
+  <select id="hullColors" multiple></select><br><br>
+
+  <button id="convexHullButton">Convex Hull</button>
+  <button id="updateButton">Update Plot</button><br><br>
+
+  <div id="clickInfo"></div>
+  <svg id="scatterplot" width="600" height="400"></svg>
+  <div id="areaInfo"></div>
+
+  <script>
+    const svg = d3.select("#scatterplot");
+    const clickInfo = d3.select("#clickInfo");
+    const areaInfo = d3.select("#areaInfo");
+    let data = [];
+    let x, y, pointSizeInput, xminInput, xmaxInput, yminInput, ymaxInput, pointColorsInput, hullColorsInput;
+    let convexHullButton, updateButton, drawHull = false;
+
+    function updatePlot() {
+      svg.selectAll("*").remove();
+      // areaInfo.selectAll("*").remove(); // Removed clearing areaInfo
+      if (!data.length) return;
+
+      const pointSize = +pointSizeInput.property("value");
+      const xmin = +xminInput.property("value");
+      const xmax = +xmaxInput.property("value");
+      const ymin = +yminInput.property("value");
+      const ymax = +ymaxInput.property("value");
+      const pointColors = Array.from(pointColorsInput.node().selectedOptions).map(option => option.value);
+      const hullColors = Array.from(hullColorsInput.node().selectedOptions).map(option => option.value);
+
+      x = d3.scaleLinear().domain([xmin, xmax]).range([50, 550]);
+      y = d3.scaleLinear().domain([ymin, ymax]).range([350, 50]);
+
+      // Draw Axes
+      const xAxis = d3.axisBottom(x);
+      const yAxis = d3.axisLeft(y);
+      svg.append("g").attr("transform", `translate(0, 350)`).call(xAxis);
+      svg.append("g").attr("transform", `translate(50, 0)`).call(yAxis);
+
+      svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(+d.x))
+        .attr("cy", d => y(+d.y))
+        .attr("r", pointSize)
+        .attr("fill", d => pointColors.includes(d.color) ? d.color : "gray")
+        .on("mouseover", (event, d) => d3.select("#tooltip").text(d.label).style("visibility", "visible"))
+        // .on("mousemove", (event) => d3.select("#tooltip").style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px"))
+        .on("mousemove", (event) => {
+            d3.select("#tooltip")
+              .style("top", (event.pageY) + "px") // Adjusted top position
+              .style("left", (event.pageX + 5) + "px"); // Adjusted left position
+        })
+        .on("mouseout", () => d3.select("#tooltip").style("visibility", "hidden"))
+        .on("click", (event, d) => clickInfo.text(`Clicked: x=${d.x}, y=${d.y}, label=${d.label}`));
+
+      svg.append("text").attr("id", "tooltip").style("visibility", "hidden").style("position", "absolute");
+
+      if (drawHull) {
+        const hulls = {};
+        data.forEach(d => {
+          if (hullColors.includes(d.color)) {
+            if (!hulls[d.color]) hulls[d.color] = [];
+            hulls[d.color].push([x(+d.x), y(+d.y)]);
+          }
+        });
+
+        Object.keys(hulls).forEach(color => {
+          const hullPoints = d3.polygonHull(hulls[color]);
+          if (hullPoints && hullPoints.length > 2) {
+            svg.append("path")
+              .datum(hullPoints)
+              .attr("class", "hull")
+              .attr("d", d3.line().curve(d3.curveLinearClosed))
+              .attr("stroke", color);
+            const area = d3.polygonArea(hullPoints);
+            areaInfo.append("div").text(`Hull Area (${color}): ${area.toFixed(2)}`);
+          }
+        });
+      }
+    }
+
+    d3.select("#csvFile").on("change", function () {
+      const file = this.files[0];
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        data = d3.csvParse(event.target.result);
+
+        const colors = [...new Set(data.map(d => d.color))];
+        pointColorsInput.selectAll("option").remove();
+        hullColorsInput.selectAll("option").remove();
+
+        colors.forEach(color => {
+          pointColorsInput.append("option").attr("value", color).text(color);
+          hullColorsInput.append("option").attr("value", color).text(color);
+        });
+
+        updatePlot();
+      };
+      reader.readAsText(file);
+    });
+
+    pointSizeInput = d3.select("#pointSize");
+    xminInput = d3.select("#xmin");
+    xmaxInput = d3.select("#xmax");
+    yminInput = d3.select("#ymin");
+    ymaxInput = d3.select("#ymax");
+    pointColorsInput = d3.select("#pointColors");
+    hullColorsInput = d3.select("#hullColors");
+    convexHullButton = d3.select("#convexHullButton");
+    updateButton = d3.select("#updateButton");
+
+    convexHullButton.on("click", function() {
+      drawHull = !drawHull;
+      updatePlot();
+    });
+
+    updateButton.on("click", updatePlot);
+  </script>
+</body>
+</html>

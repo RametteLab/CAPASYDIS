@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Scatterplot with Density Contour (Adjustable Bandwidth)</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-contour.v1.min.js"></script>
+    <style>
+      .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+            pointer-events: none;
+            font-size: 12px;
+        }
+        .clicked-info {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .color-swatch {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 5px;
+            border: 1px solid #ccc;
+        }
+        .contour {
+            fill: none;
+            stroke: black;
+            stroke-width: 1px;
+            stroke-linejoin: round;
+        }
+        svg {
+            border: 1px solid black;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Scatterplot and Density Contour</h1>
+
+    <div>
+        <label for="csvFile">Upload CSV File:</label>
+        <input type="file" id="csvFile">
+    </div>
+
+    <div>
+        <label for="xmin">X Min:</label>
+        <input type="number" id="xmin" value="0" style="width: 80px;">
+
+        <label for="xmax">X Max:</label>
+        <input type="number" id="xmax" value="1" style="width: 80px;">
+        <button id="updateButton"style="font-size: 16px;margin-left: 150px;"><strong>Update Plot</strong></button>
+    </div>
+<div>
+        <label for="ymin">Y Min:</label>
+        <input type="number" id="ymin" value="0" style="width: 80px;">
+
+        <label for="ymax">Y Max:</label>
+        <input type="number" id="ymax" value="1" style="width: 80px;">
+    </div>
+<div>
+        <label for="pointSize">Point Size:</label>
+        <input type="number" id="pointSize" value="1" style="width: 80px;">
+
+        <label for="colorSelect">Select Color:</label>
+        <select id="colorSelect">
+            <option value="all">All Colors</option>
+        </select>
+    </div>
+<div>
+        <label for="bandwidth">Bandwidth:</label>
+        <input type="number" id="bandwidth" value="20" min="1" step="1">
+
+        <button id="contourButton">Toggle Contour</button>
+
+        
+    </div>
+
+    <div id="clickedInfo" class="clicked-info"></div>
+
+    <svg id="chart" width="600" height="400"></svg>
+
+    <div id="tooltip" class="tooltip" style="display: none;"></div>
+
+    <script>
+        const chart = d3.select("#chart");
+        const tooltip = d3.select("#tooltip");
+        const clickedInfo = d3.select("#clickedInfo");
+        const colorSelect = document.getElementById("colorSelect");
+        let csvData = [];
+        let showContours = false;
+
+        // --- CSV File Handling ---
+        const csvFile = document.getElementById("csvFile");
+        csvFile.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                const text = event.target.result;
+                const lines = text.split('\n');
+
+                //  if (lines.length > 0) {
+                //     const firstLine = lines[0].trim();
+                //     if (firstLine !== "x,y,label,color") {
+                //         alert("Invalid CSV header. Expected: 'x,y,label,color'.");
+                //         console.error("Invalid CSV header. Found:", firstLine);
+                //         csvFile.value = "";
+                //         return;
+                //     }
+                // } else {
+                //     alert("The CSV file is empty.");
+                //     console.error("The CSV file is empty.");
+                //      csvFile.value = "";
+                //     return;
+                // }
+
+                csvData = d3.csvParse(text, (d) => ({
+                    x: +d.x,
+                    y: +d.y,
+                    label: d.label,
+                    color: d.color
+                }));
+                populateColorDropdown();
+            };
+            reader.readAsText(file);
+        });
+
+        // --- Populate Color Dropdown ---
+        function populateColorDropdown() {
+          const uniqueColors = [...new Set(csvData.map(d => d.color))];
+            while (colorSelect.options.length > 1) {
+              colorSelect.remove(1);
+            }
+            uniqueColors.forEach(color => {
+                const option = document.createElement("option");
+                option.value = color;
+                option.innerHTML = `<span class="color-swatch" style="background-color: ${color};"></span>${color}`;
+                colorSelect.appendChild(option);
+            });
+        }
+
+        // --- Contour Button Handling ---
+        const contourButton = document.getElementById("contourButton");
+        contourButton.addEventListener("click", () => {
+            showContours = !showContours;
+            contourButton.textContent = showContours ? "Hide Contour" : "Show Contour";
+            updatePlot();
+        });
+
+        // --- Update Button Handling ---
+        const updateButton = document.getElementById("updateButton");
+        updateButton.addEventListener("click", updatePlot);
+
+        // --- Plotting Function ---
+        function updatePlot() {
+            if (csvData.length === 0) {
+                alert("No data to plot. Please upload a CSV file.");
+                return;
+            }
+
+            const xMin = +document.getElementById("xmin").value;
+            const xMax = +document.getElementById("xmax").value;
+            const yMin = +document.getElementById("ymin").value;
+            const yMax = +document.getElementById("ymax").value;
+            const selectedColor = colorSelect.value;
+            const pointSize = +document.getElementById("pointSize").value;
+            const bandwidth = +document.getElementById("bandwidth").value; // Get bandwidth
+
+            let filteredData = csvData;
+            if (selectedColor !== "all") {
+                filteredData = csvData.filter(d => d.color === selectedColor);
+            }
+
+            const xScale = d3.scaleLinear()
+                .domain([xMin, xMax])
+                .range([50, chart.attr("width") - 20]);
+
+            const yScale = d3.scaleLinear()
+                .domain([yMin, yMax])
+                .range([chart.attr("height") - 20, 20]);
+
+            const xAxis = d3.axisBottom(xScale);
+            const yAxis = d3.axisLeft(yScale);
+
+            chart.selectAll("g.axis").remove();
+            chart.selectAll("circle").remove();
+            chart.selectAll(".contour").remove();
+
+            chart.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0, ${chart.attr("height") - 20})`)
+                .call(xAxis);
+
+            chart.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(50, 0)`)
+                .call(yAxis);
+
+             // --- Draw Points ---
+            const circles = chart.selectAll("circle")
+                .data(filteredData)
+                .join("circle")
+                .attr("cx", d => xScale(d.x))
+                .attr("cy", d => yScale(d.y))
+                .attr("r", pointSize)
+                .attr("fill", d => d.color || "steelblue")
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut)
+                .on("click", handleClick);
+
+            // --- Density Contour (Conditional) ---
+            if (showContours && selectedColor !== "all") {
+                const densityData = d3.contourDensity()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(d.y))
+                    .size([chart.attr("width"), chart.attr("height")])
+                    .bandwidth(bandwidth)  // Use the bandwidth variable here
+                    .thresholds(20)
+                    (filteredData);
+
+                 // Create a color scale for the contours
+                const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+                   .domain([0, d3.max(densityData, d => d.value)]);
+
+                chart.selectAll(".contour")
+                    .data(densityData)
+                    .join("path")
+                    .attr("class", "contour")
+                    .attr("d", d3.geoPath())
+                    .attr("fill", d => colorScale(d.value)) // Use color scale
+                    .attr("stroke", "black");
+            }
+
+
+            // --- Event Handlers ---
+            function handleMouseOver(event, d) {
+                tooltip.style("display", "block")
+                    .html(`Label: ${d.label}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+            }
+
+            function handleMouseOut(event, d) {
+                tooltip.style("display", "none");
+            }
+
+            function handleClick(event, d) {
+                clickedInfo.text(`Clicked: x=${d.x}, y=${d.y}, label=${d.label}`);
+            }
+        }
+    </script>
+</body>
+</html>

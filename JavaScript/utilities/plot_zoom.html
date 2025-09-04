@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>plot_zoom</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    /* #chart { } Remove fixed width and height */
+  .container { display: flex; flex-direction: row; margin-bottom: 10px; align-items: center; }
+  .range-container { display: flex; flex-direction: row; align-items: center; margin-right: 10px; } 
+    label { margin-right: 5px; width: auto; display: inline-block; } 
+    input[type="number"] { width: 80px; margin-right: 10px; } 
+    button { padding: 5px 10px; margin-left: 10px; } 
+  .input-group { display: inline-flex; align-items: center; margin-right: 10px; } 
+    #controls { margin: 10px; } 
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div class="container">
+      <div class="input-group">
+        <label for="pointSize">Size:</label>
+        <input type="number" id="pointSize" value="2" min="0.5" step="0.5">
+      </div>
+      <div class="input-group">
+        <label for="width">Width:</label>
+        <input type="number" id="width" value="500" min="100">
+      </div>
+      <div class="input-group">
+        <label for="height">Height:</label>
+        <input type="number" id="height" value="400" min="100">
+      </div>
+      <button id="plotButton">Plot</button>
+    </div>
+    <div class="container">
+      <div class="range-container">
+        <label for="xMin">X Min:</label>
+        <input type="number" id="xMin" value="0">
+      </div>
+      <div class="range-container">
+        <label for="xMax">X Max:</label>
+        <input type="number" id="xMax" value="1"> </div>
+      <div class="range-container">
+        <label for="yMin">Y Min:</label>
+        <input type="number" id="yMin" value="0">
+      </div>
+      <div class="range-container">
+        <label for="yMax">Y Max:</label>
+        <input type="number" id="yMax" value="1">
+      </div>
+    </div>
+    <div class="container">
+      <input type="file" id="csvFile" accept=".csv">
+    </div>
+  </div>
+
+  <div id="chart"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Get input elements and button
+    const pointSizeInput = document.getElementById("pointSize");
+    const xMinInput = document.getElementById("xMin");
+    const xMaxInput = document.getElementById("xMax");
+    const yMinInput = document.getElementById("yMin");
+    const yMaxInput = document.getElementById("yMax");
+    const widthInput = document.getElementById("width");
+    const heightInput = document.getElementById("height");
+    const plotButton = document.getElementById("plotButton");
+    const csvFile = document.getElementById("csvFile");
+
+    // Set up chart dimensions
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+    // Function to plot data
+    function plotData(data) {
+      const pointSize = parseFloat(pointSizeInput.value);
+      const xMin = parseFloat(xMinInput.value);
+      const xMax = parseFloat(xMaxInput.value);
+      const yMin = parseFloat(yMinInput.value);
+      const yMax = parseFloat(yMaxInput.value);
+      const width = parseInt(widthInput.value) - margin.left - margin.right;
+      const height = parseInt(heightInput.value) - margin.top - margin.bottom;
+
+      // Clear existing SVG elements if they exist
+      const existingSVG = d3.select("#chart").select("svg");
+      if (!existingSVG.empty()) {
+        existingSVG.remove();
+      }
+
+      // Create SVG element
+      const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      // Create scales
+      const xScale = d3.scaleLinear()
+      .domain([xMin, xMax])
+      .range([0, width]);
+
+      const yScale = d3.scaleLinear()
+      .domain([yMin, yMax])
+      .range([height, 0]);
+
+      // Add X axis
+      svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale));
+
+      // Add Y axis
+      svg.append("g")
+      .call(d3.axisLeft(yScale));
+
+      // Add circles for data points
+      svg.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xScale(d.x))
+      .attr("cy", d => yScale(d.y))
+      .attr("r", pointSize)
+      .style("fill", "steelblue");
+
+      // Zoom functionality with restricted range
+      const zoom = d3.zoom()
+      .scaleExtent([1, Infinity]) // Allow zooming in only
+      .translateExtent([, [width, height]]) // Restrict panning
+      .on("zoom", zoomed);
+
+      svg.call(zoom);
+
+      function zoomed(event) {
+        // Create new scales based on zoom transform
+        const newXScale = event.transform.rescaleX(xScale);
+        const newYScale = event.transform.rescaleY(yScale);
+
+        // Update axes
+        xAxis.call(d3.axisBottom(newXScale));
+        yAxis.call(d3.axisLeft(newYScale));
+
+        // Update circle positions
+        points.attr("cx", d => newXScale(d.x))
+            .attr("cy", d => newYScale(d.y));
+      }    
+    }
+
+    // Handle CSV file upload
+    // csvFile.addEventListener("change", function(event) {
+      //const file = event.target.files[0];
+      //const reader = new FileReader();
+//
+  //    reader.onload = function(event) {
+    //    const csvData = d3.csvParse(event.target.result);
+      //  plotData(csvData);
+      //};
+
+      //reader.readAsText(file);
+    //});
+
+    
+    // Handle CSV file upload
+csvFile.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const text = event.target.result;
+        const lines = text.split('\n'); // Split into lines
+
+        // --- Check the header (first line) ---
+        if (lines.length > 0) {  // Ensure the file is not empty
+            // const firstLine = lines[0].trim(); // Get the first line and remove whitespace
+            // const expectedHeader = "x,y,label,color";
+
+        //     if (firstLine !== expectedHeader) {
+        //         // Handle the error:  Several options here, choose the best for your application
+        //         alert("Invalid CSV header. Expected: 'x,y,label,color'.  Found: '" + firstLine + "'"); // User-friendly alert
+        //         console.error("Invalid CSV header. Expected: 'x,y,label,color'.  Found: '" + firstLine + "'"); // Log to console for debugging
+        //         // Optionally:  Clear the file input so the user has to select a valid file.
+        //         csvFile.value = "";  // This clears the file input.
+        //         return; // Stop processing the file.
+        //     }
+        // } else {
+        //     // Handle empty file
+        //     alert("The CSV file is empty.");
+        //     console.error("The CSV file is empty.");
+        //     csvFile.value = "";
+        //     return;
+        // }
+
+
+        // --- If header is valid, proceed with parsing and plotting ---
+        const csvData = d3.csvParse(text);  // Parse the *entire* file content
+        plotData(csvData);
+    };
+
+    reader.readAsText(file);
+});
+    
+
+    // Plot data on button click (after CSV is loaded)
+    plotButton.addEventListener("click", function() {
+      const file = csvFile.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const csvData = d3.csvParse(event.target.result);
+          plotData(csvData);
+        };
+        reader.readAsText(file);
+      } else {
+        alert("Please select a CSV file first.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+>S0 is the sequence with U instead of T
+AUCUACUUUCCUUAUCUAUCUACU
+-aucuacuuu.
+>S1 is the first sequence
+....ATG---CTGATGCCTGGCTCAACA-.
+ATGCTGATGGCTGGCTCAACGA
+>S2 is the second sequence
+ATGGTGATGCTGGCTAATCA
+>S3 is the third sequence
+TTGCTGATGCTGGCTGATGC
+>S4 is the fourth sequence
+CTGCTGATGCTGGCTGCTCA
+>S5 is the fifth sequence
+.TGCTGATGCTGG..
+>S6 is the sixth sequence
+...CTGATGCTGGCT
+>S7 is the seventh sequence
+.TGGTGATGCTGGCT
+>S8 is the eight sequence
+..GCTGATGCTGGCT
+>S9 is the ninth sequence
+ATGCTGATGCTGGCC
+ATGCTGATGCTGGCC
+ATGCTGATGCTGGCC
+>S10 is the tenth sequence
+.TGCTGATGCTGGC.
+>S11 is the tenth + 1 sequence
+.TGCTGA--TGCTGGC.--
+.TGCTGA--TGCTGGC.--
+.TGCTGA--TGCTGGC.--
+.TGCTGA--TGCTGGC.--

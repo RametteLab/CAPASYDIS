@@ -1,8 +1,9 @@
-Instructions for using the Golang scripts
+# Instructions for using the Golang scripts
 
 
 
-# 0. Make sure go is installed on your machine
+## 0. Install go on your machine
+After [Go installation](https://go.dev/doc/install), check that go indeed runs:
 ```
 go version
 ```

@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"capasydis_go/utils"
+	"build_axes/utils"
 	"flag"
 	"fmt"
 	"log"

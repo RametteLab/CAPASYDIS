@@ -3,7 +3,8 @@
 
 ## 1. Get the MSA
 
-**NR99:** SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta.gz SILVA release 138 SSU Ref NR 99 138.2 dataset is based on the full SSU Ref 138.2 dataset, in total encompassing ==510,508 sequences.
+**NR99:** SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta.gz    
+SILVA release 138 SSU Ref NR 99 138.2 dataset is based on the full SSU Ref 138.2 dataset, in total encompassing 510,508 sequences.
 ```
 num_seqs sum_len min_len avg_len max_len
 510,495 25,524,750,000 50,000 50,000 50,000
@@ -11,9 +12,13 @@ num_seqs sum_len min_len avg_len max_len
 
 **RNA**
 Number of Sequences:
+
 20389 **Archaea** 3.99%
+
 431166 **Bacteria** 84.46%
+
 58940 **Eukaryota** 11.54%
+
 
 **NR99:** ==SILVA_138.2_SSURef\_**NR99**\_tax_silva_full_align_trunc==.fasta.gz
 

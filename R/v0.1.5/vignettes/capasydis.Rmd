@@ -1,0 +1,220 @@
+---
+title: "CAPASYDIS: Examples of utilisation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{capasydis}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: sentence
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(capasydis)
+library(ape)
+```
+
+# 1) A small example
+
+## 1a) Compute asymmetric distances
+
+```{r}
+Alignment_df <-
+ data.frame(rbind(
+   S0=c("A","C","G","T","A","T","G","C","A","T"),
+   S1=c("A","A","G","T","A","T","G","C","A","T"),
+   S2=c("A","C","G","T","C","T","G","C","A","T"),
+   S3=c("A","C","G","T","A","T","G","C","T","T"))
+ )
+A <- asymDist1D(Alignment = Alignment_df,DeltaMatrix=DeltaMatrix,PosRef=1)
+colnames(Alignment_df) <- paste0("P",1:10)
+Alignment_df
+```
+
+The small dataset contains 4 sequences (S0...S3) aligned over 10 positions (P1...P10).\
+- S1 contains one difference to S0 at P2.\
+- S2 contains one difference to S0 at P5.\
+- S3 contains one difference to S0 at P9.
+
+The DeltaMatrix being used is:
+
+```{r}
+DeltaMatrix
+```
+
+It provides the delta score for each pair of bases being compared.
+
+### Inspect the 1D object and plot it
+
+```{r}
+A
+```
+
+The "Score" is the unscaled value of the distance.
+The "minScore" is the score of the reference sequence based on a specific DeltaMatrix, while "maxScore" is the score of the predicted most diverging sequence given that reference score.
+The range score is the difference between maxScore and minScore.
+Taking the case of sequence 2, its asymdist value is the scaled value of its score:
+
+```{r}
+A$asymdist[2] == (A$Score[2]-A$minScore)/A$RangeScore
+```
+
+### How is this calculated internally?
+
+```{r}
+PosRef=1 # this is what was chosen 
+REFSeq <- as.character(Alignment_df[PosRef,]) # this is the reference sequence
+DeltaVecDf_x <- apply(Alignment_df,1,FUN=function(x) CalcDelta2seqs(REF=REFSeq,x,DeltaVector=DeltaMatrix))
+Npos <- nrow(DeltaVecDf_x)
+Nseqs <- ncol(DeltaVecDf_x)
+#conversion to a matrix
+DeltaVecDf <- matrix(DeltaVecDf_x,ncol = Nseqs,nrow=Npos,byrow = FALSE) # need to swap rows and columns !
+DeltaVecDf
+```
+
+The rows are the positions, and the columns the different sequences.
+The Delta value is found only for those positions whose values differ to the corresponding positions of the reference sequence, based on the DeltaMatrix values for the pairs being compared.
+
+Then for each sequence, the unscaled score is calculated as the sum of square root values of the position indices augmented by the detlta value over all positions.
+
+```{r}
+Score <- apply(DeltaVecDf,2,sumSqrtScore)
+Score
+```
+
+Note that the score of the reference (i.e. all delta values are 0) is obtained by:
+
+```{r}
+sumSqrtScore(DeltaVector = rep(0,nrow(DeltaVecDf)))
+```
+
+which is also:
+
+```{r}
+sum(sqrt(1:10))
+```
+
+**Let's see what it looks like:**
+
+```{r echo=FALSE, fig.height=4, fig.width=4}
+plot(A$asymdist,ylab="asymdist1D",pch=16,xlim=c(1,5),col=c("blue",1,1,1),main="1D example")
+text(A$asymdist,rownames(Alignment_df),pos = 4,col=c("blue",1,1,1))
+
+```
+
+The chosen reference sequence is indicated in blue font.
+Changes in the 5' end have more effects than in the 3' end of the sequence, and indeed S1 is more distant to S0 than S2 or S3 are to S0.
+It seems that S2 is very similar to S3, yet different:
+
+```{r}
+A$asymdist[3:4]
+diff(A$asymdist[3:4])
+```
+
+## 1b) Plot a 2D representation of the sequences using capasydis
+
+```{r}
+B <- asymDist2D(Alignment = Alignment_df,DeltaMatrix = DeltaMatrix,
+                   PosRef1 = 1,PosRef2 = 4)
+
+B
+```
+
+-   disttoRefPos1 starts with "0", given that Position 1 was given as reference for the first axis.
+-   disttoRefPos2 ends with "0", given that Position 4 was given as reference for the second axis.
+
+```{r fig.height=4, fig.width=4}
+plot(x=B$disttoRefPos1,y=B$disttoRefPos2,xlab="asymDist to ref1 (S0)",ylab="asymDist to ref2 (S3)",pch=16,xlim=c(0,.12),ylim=c(0,.12),main="2D example")
+text(x=B$disttoRefPos1,y=B$disttoRefPos2,labels = B$Names,pos = 4,col=c("blue",1,1,"red"))
+```
+
+The chosen reference sequences 1 and 2 are indicated in blue and red fonts, respectively.
+Changes in the 5' end have more effects than in the 3' end of the sequence, and indeed S1 is more distant to S0 than S2 or S3 are to S0.
+On the y axis, S3 was chosen as a reference, and its coordinate on the y axis is thus 0.
+
+## 2) Introducing some mutants among the sequences
+
+**Let's mutate S2 by introducing 1 SNP randomly (and manually)...\
+**You can also use the mutate() function if needed.
+
+```{r fig.height=5, fig.width=5}
+Alignment_df2m <-
+ data.frame(rbind(
+   S0=c("A","C","G","T","A","T","G","C","A","T","A","C","G","T","A","T","G","C","A","T"),
+   S1=c("A","A","G","T","A","T","G","C","A","T","A","A","G","T","A","T","G","C","A","T"),
+   S2=c("A","C","G","T","C","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.1=c("T","C","G","T","C","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.2=c("A","G","G","T","C","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.3=c("A","C","C","T","C","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.4=c("A","C","G","A","C","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.5=c("A","C","G","T","T","T","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.6=c("A","C","G","T","C","G","G","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.7=c("A","C","G","T","C","T","C","C","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.8=c("A","C","G","T","C","T","G","A","A","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.9=c("A","C","G","T","C","T","G","C","T","T","A","C","G","T","C","T","G","C","A","T"),
+   S2.10=c("A","C","G","T","C","T","G","C","A","G","A","C","G","T","C","T","G","C","A","T"),
+   S3=c("A","C","G","T","A","T","G","C","T","T","A","C","G","T","A","T","G","C","T","T"))
+   
+ )
+Alignment_df2m <- rbind(Alignment_df2m,S0_10m =mutate(as.character(Alignment_df2m["S0",]),Nmut=10))
+nrow(Alignment_df2m)
+
+T_df2m <- asymDist2D(Alignment = Alignment_df2m,DeltaMatrix = DeltaMatrix,
+                   PosRef1 = 1,PosRef2 = nrow(Alignment_df2m)) # the last one is the last row, i.e. S0 with 10 mutations
+
+plot(x=T_df2m$disttoRefPos1,y=T_df2m$disttoRefPos2,xlab="asymDist to ref1",ylab="asymDist to ref2 ",pch=16,main="2D mutants",xlim=c(0,0.4),ylim=c(0,0.4),col=c("blue","black","black",rep("lightpink",10),"black","red"))
+text(x=T_df2m$disttoRefPos1,y=T_df2m$disttoRefPos2,labels = T_df2m$Names,pos = 4,col=c("blue","black","black",rep("lightpink",10),"black","red"))
+```
+
+Remember that S0-S3 are very close to each other (i.e. 1 SNP difference).
+S0_10m is 10 SNP different from S0, so is positioned rather far away from the rest of the sequences.
+The 1-SNP "mutants" of S2 (colored in pink) are found in the same neighborhood as of S2.
+
+### How does capasydis compare to a "classical" phylogenetic analysis, graphically?
+
+```{r fig.height=4, fig.width=4}
+Alignment_df2m_T <- data.frame(t(Alignment_df2m))
+Alignment_ape <- as.alignment(Alignment_df2m_T)
+
+# genetic distance matrix 
+DIST <- dist.dna(x=as.DNAbin(Alignment_ape), model = "raw", variance = FALSE,
+              gamma = FALSE, pairwise.deletion = FALSE,
+              base.freq = NULL, as.matrix = FALSE)
+
+plot(hclust(DIST),hang = -1)
+```
+
+The phylogram shows a similar relationships as to the 2D plot from capasydis, i.e. that S1, S3, S0 cluster together, while S0_10m is the most distant to S0.
+The 1-SNP mutants of S2 cluster together with S2.
+The branches or leaves of the phylogram may be rotated freely, as long as the pairwise distances are kept constant.
+This "flexibility" does not allow a unique representation of the sequence space.
+
+### How do the distances compare, numerically?
+
+```{r fig.height=4, fig.width=4}
+DIST_df <- as.matrix(DIST)
+plot(x=DIST_df[,1],y=T_df2m$disttoRefPos1,pch=16,ylab="asymDist to Ref1",xlab="Phylogenetic distance to Ref1",col=c("blue","black","black",rep("lightpink",10),"black","red"),main="asymdist vs. phylogenetic distances")
+```
+
+The plot illustrates that classical phylogenetic distances, because they do not account for positional sequence differences, do not differentiate closely related variants.
+The latter appear at the same distance to the reference sequence:
+
+```{r}
+table(DIST_df[,1])
+```
+
+While asymdist resolves each unique sequence as a unique point on the 1D plot, the classical phylogenetic approach defines only 3 classes of distances
+
+```{r}
+table(T_df2m$disttoRefPos1)
+all(unique(T_df2m$disttoRefPos1) == T_df2m$disttoRefPos1)
+```

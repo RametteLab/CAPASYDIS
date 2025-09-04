@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>capasydis</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">capasydis</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(capasydis)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; Loading required package: parallel</span></span></code></pre></div>
+<div id="minimalist-example" class="section level1">
+<h1>1) minimalist example</h1>
+<div id="compute-asymmetric-distance-for-the-alignment" class="section level2">
+<h2>Compute asymmetric distance for the alignment</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>Alignment_df <span class="ot">&lt;-</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a> <span class="fu">data.frame</span>(<span class="fu">rbind</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>   <span class="at">S0=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>   <span class="at">S1=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>   <span class="at">S2=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>   <span class="at">S3=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a> )</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">asymDist1D</span>(<span class="at">Alignment =</span> Alignment_df,<span class="at">DeltaMatrix=</span>DeltaMatrix,<span class="at">PosRef=</span><span class="dv">1</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">colnames</span>(Alignment_df) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;P&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>Alignment_df</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;    P1 P2 P3 P4 P5 P6 P7 P8 P9 P10</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; S0  A  C  G  T  A  T  G  C  A   T</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; S1  A  A  G  T  A  T  G  C  A   T</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; S2  A  C  G  T  C  T  G  C  A   T</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; S3  A  C  G  T  A  T  G  C  T   T</span></span></code></pre></div>
+<p>This small dataset contains 4 sequences (S0,…,S3) aligned over 10
+positions (P1..P10). - S1 contains one difference to S0 at P2. - S2
+contains one difference to S0 at P5. - S3 contains one difference to S0
+at P9.</p>
+</div>
+<div id="inspect-the-1d-object-and-plot-it" class="section level2">
+<h2>Inspect the 1D object and plot it</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>A</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; $Score</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; [1] 22.46828 22.48933 22.48165 22.48158</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; $minScore</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; [1] 22.46828</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; $maxScore</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; [1] 22.77254</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; $RangeScore</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; [1] 0.3042612</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; $asymdist</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [1] 0.00000000 0.06920517 0.04396354 0.04372505</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [1] &quot;list&quot;       &quot;asymdist1D&quot;</span></span></code></pre></div>
+<p>The “score” is the unscaled version of the distance. The “minSCore”
+is the score of the reference sequence given a specific DeltaMatrix,
+while “maxScore” is the score of the predicted most diverging sequence
+given the reference score. The range score is the difference between
+maxScore and minScore. Taking the case of sequence 2, its asymdist value
+is the scaled value of its score.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>A<span class="sc">$</span>asymdist[<span class="dv">2</span>] <span class="sc">==</span> (A<span class="sc">$</span>Score[<span class="dv">2</span>]<span class="sc">-</span>A<span class="sc">$</span>minScore)<span class="sc">/</span>A<span class="sc">$</span>RangeScore</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- -->
+The chosen reference sequence is indicated in blue font. Changes in the
+5’ end have more effects than in the 3’ end of the sequence, and indeed
+S1 is more distant to S0 than S2 or S3 are to S0. It seems that S2 is
+very similar to S3, yet different.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>A<span class="sc">$</span>asymdist[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.04396354 0.04372505</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">diff</span>(A<span class="sc">$</span>asymdist[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; [1] -0.0002384914</span></span></code></pre></div>
+</div>
+<div id="plot-a-2d-representation-based-on-2-chosen-references" class="section level2">
+<h2>Plot a 2D representation based on 2 chosen references</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">asymDist2D</span>(<span class="at">Alignment =</span> Alignment_df,<span class="at">DeltaMatrix =</span> DeltaMatrix,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                   <span class="at">PosRef1 =</span> <span class="dv">1</span>,<span class="at">PosRef2 =</span> <span class="dv">4</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>B</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; $Names</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;S0&quot; &quot;S1&quot; &quot;S2&quot; &quot;S3&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; $disttoRefPos1</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; [1] 0.00000000 0.06920517 0.04396354 0.04372505</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; $disttoRefPos2</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; [1] 0.04348834 0.11231886 0.08721387 0.00000000</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;asymdist2D&quot;</span></span></code></pre></div>
+<ul>
+<li>disttoRefPos1 starts with “0” given that Position 1 was given as
+reference for the first axis.</li>
+<li>disttoRefPos2 end with “0” given that Position 4 was given as
+reference for the second axis.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>B<span class="sc">$</span>disttoRefPos1,<span class="at">y=</span>B<span class="sc">$</span>disttoRefPos2,<span class="at">xlab=</span><span class="st">&quot;asymDist to ref1 (S0)&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;asymDist to ref2 (S3)&quot;</span>,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">12</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">12</span>),<span class="at">main=</span><span class="st">&quot;2D example&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x=</span>B<span class="sc">$</span>disttoRefPos1,<span class="at">y=</span>B<span class="sc">$</span>disttoRefPos2,<span class="at">labels =</span> B<span class="sc">$</span>Names,<span class="at">pos =</span> <span class="dv">4</span>,<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- -->
+The chosen reference sequences 1 and 2 are indicated in blue and red
+fonts, respectively. Changes in the 5’ end have more effects than in the
+3’ end of the sequence, and indeed S1 is more distant to S0 than S2 or
+S3 are to S0. On the y axis, S3 was chosen as a reference, and its
+coordinate on the y axis is thus 0.</p>
+</div>
+<div id="if-i-mutate-s2-by-1-snp-randomly" class="section level2">
+<h2>if i mutate S2 by 1 SNP randomly</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>Alignment_df2m <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a> <span class="fu">data.frame</span>(<span class="fu">rbind</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>   <span class="at">S0=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>   <span class="at">S1=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>   <span class="at">S2=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>   <span class="at">S2.1=</span><span class="fu">c</span>(<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>   <span class="at">S2.2=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>   <span class="at">S2.3=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>   <span class="at">S2.4=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>   <span class="at">S2.5=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>   <span class="at">S2.6=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>   <span class="at">S2.7=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>   <span class="at">S2.8=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>   <span class="at">S2.9=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>   <span class="at">S2.10=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>),</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>   <span class="at">S3=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;T&quot;</span>))</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>   </span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a> )</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>Alignment_df2m <span class="ot">&lt;-</span> <span class="fu">rbind</span>(Alignment_df2m,<span class="at">S0_10m =</span><span class="fu">mutate</span>(<span class="fu">as.character</span>(Alignment_df2m[<span class="st">&quot;S0&quot;</span>,]),<span class="at">Nmut=</span><span class="dv">10</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="fu">nrow</span>(Alignment_df2m)</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>T_df2m <span class="ot">&lt;-</span> <span class="fu">asymDist2D</span>(<span class="at">Alignment =</span> Alignment_df2m,<span class="at">DeltaMatrix =</span> DeltaMatrix,</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>                   <span class="at">PosRef1 =</span> <span class="dv">1</span>,<span class="at">PosRef2 =</span> <span class="fu">nrow</span>(Alignment_df2m)) <span class="co"># the last one is the last row , </span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>T_df2m<span class="sc">$</span>disttoRefPos1,<span class="at">y=</span>T_df2m<span class="sc">$</span>disttoRefPos2,<span class="at">xlab=</span><span class="st">&quot;asymDist to ref1&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;asymDist to ref2 &quot;</span>,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">main=</span><span class="st">&quot;2D mutants&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.3</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="fu">rep</span>(<span class="st">&quot;lightpink&quot;</span>,<span class="dv">10</span>),<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>))</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x=</span>T_df2m<span class="sc">$</span>disttoRefPos1,<span class="at">y=</span>T_df2m<span class="sc">$</span>disttoRefPos2,<span class="at">labels =</span> T_df2m<span class="sc">$</span>Names,<span class="at">pos =</span> <span class="dv">4</span>,<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="fu">rep</span>(<span class="st">&quot;lightpink&quot;</span>,<span class="dv">10</span>),<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- -->
+Remember that S0-S3 are very close to each other (i.e. 1 SNP difference
+to each other). S0_10m is 10 SNP different frmo S0, so is positioned
+rather far away from the rest of the sequences. The 1-SNP “mutants” of
+S2 (colored in pink) are found in the same neighborhood of S2.</p>
+<div id="how-does-capasydis-compare-to-a-classical-phylogenetic-analysis" class="section level3">
+<h3>how does capasydis compare to a “classical” phylogenetic
+analysis?</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>Alignment_df2m_T <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(Alignment_df2m))</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>Alignment_ape <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">as.alignment</span>(Alignment_df2m_T)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># genetic distance matrix </span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>DIST <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">dist.dna</span>(<span class="at">x=</span>ape<span class="sc">::</span><span class="fu">as.DNAbin</span>(Alignment_ape), <span class="at">model =</span> <span class="st">&quot;raw&quot;</span>, <span class="at">variance =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>              <span class="at">gamma =</span> <span class="cn">FALSE</span>, <span class="at">pairwise.deletion =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>              <span class="at">base.freq =</span> <span class="cn">NULL</span>, <span class="at">as.matrix =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">hclust</span>(DIST),<span class="at">hang =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAABQVBMVEUAAAAAABcAACgAACoAADEAADoAAEkAAFgAAGYADQAAFwAAISAAKAAAOigAOjoAOmYAOnwAOpAAZpAAZpwAZrYXAAAgAAAge9soAAAokNsxkNsyUTE6AAA6ADo6AGY6Kjo6OgA6OmY6OpA6ZmY6ZpA6ZrY6fHs6kJA6kLY6kLw6kNtJAABJtv9RMjpYAABYZjpYtv9mAABmADpmAGZmOgBmOjpmkJBmkLZmkNtmnZBmtrZmtttmtv97OgCBZgCQOgCQOjqQZgCQZjqQkGaQkLaQtpCQttuQtv+Q27aQ29uQ2/+dkDq2ZgC2Zjq2ZpC2kDq2kGa2tma225C227a229u22/+2/9u2///bkCrbkDLbkDrbkGbbtmbbtpDb27bb29vb2//b/9vb////tkn/tmb/23v/25D/27b//7b//9v///9juwtBAAAACXBIWXMAAA7DAAAOwwHHb6hkAAANuklEQVR4nO2dC5vbRhWGFWDbpZQsCy704sL2Ei4qN5eUS2LYtKWldRSgpcumahKKIxxb//8HMPcZWTP+JHske7Xne9rseDQaSa+Ozpwj2ZqkJG1Usu8dOHQRICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAiIAAERICACBESAgAgQEAECIkBABAgoFqDVo7MkSd644MXz5HQebvj3y3AveSJ09PYF3mKWHG/oKZoiAVreloeWpADQs9ubDksBYoimcJNXChBjojXdDGjzYRlAydEMbfNKAWIHdvIxMw/G6XQuAcn9X064TZVfnanrJuMHzxasHrCKW3Ox6tFHt5PjC9WPOOgnzB5H7G+l1afsw8msFNVjtjmxAbv24/eS5OYf5qVa7WRWXf6Ym/gbM7FHo8dnydHd8qux6q97QAyJPJure7e+LuuAlGGwCgWIVXOdXOplyuQUIL4aq6m1koZlzFUAUGurBrwfufzozF1emNVVp0lyprroAxA/KxVcVUB88bx8JByUrM74SV2MFbzTi/I/ZQWQLFRbnVzwf1mZHexozq1EAhBrs1aSklmeucvZLn1/LrvigFK+M8ld1b4HQPIggoDY4pMv1EJRrS68XB2CdcgOoKNZvRXraFTa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" /><!-- -->
+The phylogram shows the same relationships, i.e. </p>
+</div>
+</div>
+</div>
+<div id="how-do-the-distances-compare" class="section level1">
+<h1>How do the distances compare?</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>DIST_df <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(DIST)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>DIST_df[,<span class="dv">1</span>],<span class="at">y=</span>T_df2m<span class="sc">$</span>disttoRefPos1,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylab=</span><span class="st">&quot;asymDist to Ref1&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Phylogenetic distance to Ref1&quot;</span>,<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="fu">rep</span>(<span class="st">&quot;lightpink&quot;</span>,<span class="dv">10</span>),<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="at">main=</span><span class="st">&quot;asymdist vs. phylogenetic distances&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- -->
+The plot illustrates that phylogenetic distances, due to their
+calculations that did not account for positional sequence differences,
+do not differentiate well closely related variants. These appear at the
+same distance to the reference sequence.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">table</span>(DIST_df[,<span class="dv">1</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;    0  0.1 0.15  0.5 </span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;    1    4    9    1</span></span></code></pre></div>
+<p>While asymdist resolves each unique sequence as a unique point on the
+1D plot, the classical phylogenetic approach defines only 3 classes of
+distances</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">table</span>(T_df2m<span class="sc">$</span>disttoRefPos1)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt;                  0 0.0456748860414518 0.0486085779077745 0.0552819379110425 </span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;                  1                  1                  1                  1 </span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt;  0.064259398966945 0.0685760809925945 0.0695752173001103 0.0744535576126533 </span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt;                  1                  1                  1                  1 </span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; 0.0764943539921091 0.0823497181163316 0.0887244279695558   0.10146080947597 </span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;                  1                  1                  1                  1 </span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt;  0.113749635691405  0.130537728877272  0.238185499289138 </span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt;                  1                  1                  1</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">unique</span>(T_df2m<span class="sc">$</span>disttoRefPos1) <span class="sc">==</span> T_df2m<span class="sc">$</span>disttoRefPos1)</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

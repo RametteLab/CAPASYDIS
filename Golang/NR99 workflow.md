@@ -31,14 +31,14 @@ $truncAte -v # version:0.3.1
 $truncAte -h
 $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta -j 60 -o $DESTDIR > $LOG
 ```
-<=======================================================================>
+<=======================================================================>    
 (Select_seqs version:  0.3.1 )
 = MSA input file:                        /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta
 = Output directory:                      /path/to/SILVA/NR99/output_select_seqs
 => Number of seqs:                       510495
 => Number of aligned positions:          50000
 => Threshold applied to keep a position: 0.9
- <=======================================================================>
+ <=======================================================================>    
 Results:
 1) After the analysis of the MSA:
     - the first position matching k is: 1144
@@ -49,7 +49,7 @@ Results:
     - Final alignment length:            29932
     - Final number of sequences:         387633
 (387633 / 510495 = 75.9 % of the initial number of sequences)
- <=======================================================================>
+ <=======================================================================>    
 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
 Started at:  2025-03-15 15:53:02
 Finished at: 2025-03-15 17:09:25
@@ -66,16 +66,16 @@ LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
 
- <=======================================================================>
+ <=======================================================================>    
 (deduplicateseq version:  0.1.1 )
 = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
 = Output directory:                      /path/to/SILVA/NR99/output_select_seqs
 => Number of initial seqs:                       387633
- <=======================================================================>
+ <=======================================================================>    
 Results:
 => Number of final seqs:                         331663
 after deduplication of the sequences
- <=======================================================================>
+ <=======================================================================>    
 Files 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta
 Started at:  2025-03-15 17:38:05
 Finished at: 2025-03-15 17:48:21
@@ -166,7 +166,7 @@ $build_axes -v #version:0.1.8
 $build_axes -i $MSA -R1 5553 -R2 149697 -o $output -f > $LOG
 more $LOG
 ```
-<=======================================================================>
+<=======================================================================>    
 Info:
 = capasydis - version:                   0.1.8
 = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta
@@ -174,7 +174,7 @@ Info:
 => Number of sequences:                 331663
 => Number of aligned positions:         29932
 => Delta values:                         default
-<=======================================================================>
+<=======================================================================>    
 Details:
 REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379
 REF1 number: 5553
@@ -182,7 +182,7 @@ REF1 number: 5553
         - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1
         - sequence nber: 149697
         - value: 0.0983304207
---------------
+--------------    
 REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1
 REF2 number: 149697
 - Most distant sequence to REF2:
@@ -194,7 +194,7 @@ Started at:  2025-08-17 15:06:43
 Finished at: 2025-08-17 15:07:42
 Number of cores (-j): 95 
 Elapsed time: 59.124874951s
-<=======================================================================>
+<=======================================================================>    
 
 ### coloring E. coli
 Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;

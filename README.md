@@ -1,5 +1,4 @@
-                    *CAPASYDIS* 
-(Cartesian Projections of Asymmetric Distances) 	 
+*CAPASYDIS* (Cartesian Projections of Asymmetric Distances) 	 
 ===========================================================
 
 ## SHORT DESCRIPTION   

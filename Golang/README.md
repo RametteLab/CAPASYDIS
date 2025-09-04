@@ -9,7 +9,7 @@ go version
 ```
 should return the current version of the installed Go on your machine.
 
-# 1. Clone the repository 
+## 1. Clone the repository 
 ```
 git clone https://github.com/RametteLab/CAPASYDIS/
 ```
@@ -32,11 +32,11 @@ go run main.go -h
 See then the *help* for further instructions about the possible flags and parameters.
 
 
-# Disclaimer
+## Disclaimer
 a) This is my first Golang project. The code base and code structure will most likely need some revision.
 b) The scripts have been developed to be used on a Linux servers.
 Other operating systems have not been tested. 
 
-# To be done next:
+## Could be done next:
 - use a CLI such as cobra to bundle  all Golang scripts together.
 - a TUI would also be good

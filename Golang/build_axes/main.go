@@ -83,7 +83,7 @@ func main() {
 
 	if *help {
 		color.Red("----------------------------------\n")
-		color.Red("          capasydis (go version)\n")
+		color.Red("          build_axes\n")
 		color.Red("----------------------------------\n")
 		fmt.Print("version: ")
 		color.Red(version + "\n")

@@ -5,7 +5,7 @@ package main
 // A. Ramette 2025
 
 import (
-	"degap_go/utils"
+	"degap/utils"
 	"flag"
 	"fmt"
 	"log"

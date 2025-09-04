@@ -10,7 +10,7 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"select_seqs_go/utils"
+	"truncAte/utils"
 	"strings"
 	"sync"
 	"time"

@@ -25,4 +25,4 @@ Note: The data needs to be unzipped before it can be uploaded interactively by t
 
 After clicking on the "Utilities" button, you should see the following:
 
-[<img alt="alt_text" width="500px" src="utilities.png" />]()
+[<img alt="alt_text" width="700px" src="utilities.png" />]()

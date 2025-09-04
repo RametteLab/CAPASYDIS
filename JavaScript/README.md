@@ -19,7 +19,7 @@ Please note this data set was produced with low precision (e-6) for the coordina
 
 Note: The data needs to be unzipped before it can be uploaded interactively by the HTML utilities.
 
-## Some snapshots
+## Some snapshots of the index.html form:
 
 [<img alt="alt_text" width="500px" src="localhost.png" />]()
 

@@ -31,14 +31,14 @@ $truncAte -v # version:0.3.1
 $truncAte -h
 $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta -j 60 -o $DESTDIR > $LOG
 ```
+<=======================================================================>   
+(Select_seqs version:  0.3.1 )   
+= MSA input file:                        /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta   
+= Output directory:                      /path/to/SILVA/NR99/output_select_seqs   
+=> Number of seqs:                       510495   
+=> Number of aligned positions:          50000   
+=> Threshold applied to keep a position: 0.9   
 <=======================================================================>    
-(Select_seqs version:  0.3.1 )
-= MSA input file:                        /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta
-= Output directory:                      /path/to/SILVA/NR99/output_select_seqs
-=> Number of seqs:                       510495
-=> Number of aligned positions:          50000
-=> Threshold applied to keep a position: 0.9
- <=======================================================================>    
 Results:
 1) After the analysis of the MSA:
     - the first position matching k is: 1144

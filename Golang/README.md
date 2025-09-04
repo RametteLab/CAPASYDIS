@@ -14,14 +14,28 @@ should return the current version of the installed Go on your machine.
 git clone https://github.com/RametteLab/CAPASYDIS/
 ```
 and navigate to the folder `Golang/`
+```
+cd CAPASYDIS/Golang
+```
+
+Let's take the example of e.g. `build_axes` folder and scripts.
+
+```
+cd build_axes
+
+go mod init build_axes
+go mod tidy
+```
+This will install all the dependencies needed for running your application.
+
 
 ## 2. Option 1: Compile the Golang scripts
-In each directory, where a "main.go" is found do the following:
+In the directory where a "main.go" in the build_axes directory is found do the following:
 ```
 go mod tidy
-go build main.go
+go build -o build_axes main.go # -o is for the name of the executable
 ```
-This will create a "main" executable file in your current directory. You can rename that executable or move it wherever you want. The executable is platform-dependent.
+This will create a "build_axes" executable file in your current directory. This executable is platform-dependent.
 
 ## 3. Option 2: Run without compiling
 This may be useful if you want to change the main.go code (at your own risk).

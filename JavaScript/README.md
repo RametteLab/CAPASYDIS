@@ -1,7 +1,7 @@
 This directory presents a series of utilities written in HTML and leveraging the D3.js and Three.js libraries to render and interact with large data points. For the NR99 data, the plotly library implemented in R was sufficient for a descent 3D rendering of the images. For larger projects, the provided D3.js utilities may come handy.
 
 
-## start the go server
+## start the go server (go should be instsalled and running. See [Golang](https://github.com/RametteLab/CAPASYDIS/tree/main/Golang) )
 ```
 go run main.go
 ```

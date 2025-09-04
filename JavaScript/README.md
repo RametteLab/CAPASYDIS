@@ -22,4 +22,7 @@ Note: The data needs to be unzipped before it can be uploaded interactively by t
 ## Some snapshots
 
 [<img alt="alt_text" width="500px" src="localhost.png" />]()
+
+After clicking on the "Utilities" button, you should see the following:
+
 [<img alt="alt_text" width="500px" src="utilities.png" />]()

@@ -193,8 +193,8 @@ more $LOG
            - sequence nber: 149697   
            - value: 0.0983304207   
    --------------    
-   REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-   REF2 number: 149697   
+>   REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+>   REF2 number: 149697   
 >   - Most distant sequence to REF2:   
            - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
            - sequence nber: 128973   
@@ -258,7 +258,7 @@ This is how the `Patterns.tsv` looks like:
 ```{sh}
 # seqkit grep -r -p "AB302407\.1\.2962"  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta | seqkit seq -g
 ```
-NOte: One can also use `findseq`.   
+*Note*: One can also use [`findseq`](https://github.com/RametteLab/CAPASYDIS/tree/main/Golang/findseq).   
 
 ### Building the 3D coordinates   
 REF1= Ecoli    (index=5553)   
@@ -310,7 +310,7 @@ $merge3D -i $FileR1R2 -j $FileR1R3 -o output_build_axesv0.1.8_R1_R2_R3/output_R1
   Elapsed time: 677.509251 micros   
 
 
-## Checking the uniqueness with build_axes -r  for 1e10 (default)
+## Checking the uniqueness with build_axes -r at the e-10 precision (default)
 
 ```{sh}
 CSVfile=/path/to/bin/NR99/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv

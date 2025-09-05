@@ -72,6 +72,7 @@ LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
 <summary>Generated output</summary>   
+
 > =======================================================================     
 
   (deduplicateseq version:  0.1.1 )     
@@ -105,7 +106,7 @@ seqkit rmdup -s $MSA -o test
 [INFO] 0 duplicated records removed     
 
 
-### taxonomic breakdown of the cleaned MSA     
+### Taxonomic breakdown of the cleaned MSA     
 ```{sh}
 MSA=/path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta # also available at: https://doi.org/10.5281/zenodo.17055348     
 grep -c ">" $MSA # 331663
@@ -125,11 +126,7 @@ seqkit stat $MSA
   >331,663  9,927,336,916   29,932   29,932   29,932
 
 
-### start with Ecoli and determine its most distant relative + Archaea     
-=> taking then E. coli "AB035920.964.2505" as it was rather abundant     
-
-
-### what is the size ranges in the different domains     
+### What is the size ranges in the different domains     
 
 ```{sh}
 seqkit grep -n -r -p "__Archaea" $MSA | seqkit seq -g | seqkit stat
@@ -141,9 +138,10 @@ seqkit grep -n -r -p "__Bacteria" $MSA | seqkit seq -g | seqkit stat
 >Archaea          6,031    7,712,784      842   1,278.9    2,787
 >Eukaryota       34,437   55,283,935    1,087   1,605.4    3,232
 >Bacteria       291,195  382,530,854    1,036   1,313.7    2,642
+=> taking then E. coli "AB035920.964.2505" as it was rather abundant     
 
 
-## 4. Build the axes
+## 4) Build the axes
 position of the Ecoli REF1     
 
 ```{sh}
@@ -184,31 +182,31 @@ more $LOG
 <summary>Generated output</summary>    
 
 >Info:    
-> = capasydis - version:                   0.1.8    
-> = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
-> = Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
-> => Number of sequences:                 331663   
-> => Number of aligned positions:         29932   
-> => Delta values:                         default   
-> =======================================================================      
-> Details:   
-> REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
-> REF1 number: 5553   
-> - Most distant sequence to REF1:   
->         - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
->         - sequence nber: 149697   
->         - value: 0.0983304207   
-> --------------    
-> REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-> REF2 number: 149697   
-> - Most distant sequence to REF2:   
->         - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
->         - sequence nber: 128973   
->         - value: 0.1298365572   
-> Timing:   
-> Number of cores (-j): 95    
-> Elapsed time: 59.124874951s   
->  =======================================================================     
+  > = capasydis - version:                   0.1.8    
+  > = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
+  > = Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
+  > => Number of sequences:                 331663   
+  > => Number of aligned positions:         29932   
+  > => Delta values:                         default   
+  > =======================================================================      
+  > Details:   
+  > REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
+  > REF1 number: 5553   
+  > - Most distant sequence to REF1:   
+  >         - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+  >         - sequence nber: 149697   
+  >         - value: 0.0983304207   
+  > --------------    
+  > REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+  > REF2 number: 149697   
+  > - Most distant sequence to REF2:   
+  >         - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
+  >         - sequence nber: 128973   
+  >         - value: 0.1298365572   
+  > Timing:   
+  > Number of cores (-j): 95    
+  > Elapsed time: 59.124874951s   
+  >  =======================================================================     
 
 
 ### Coloring E. coli and Friends
@@ -233,14 +231,14 @@ Enterobacteriaceae:
 # $colorCSVTaxonomy -i $WD/output.csv -o $WD/output_with_color.csv -p $WD/Patterns.tsv
 ```
 This is how the `Patterns.tsv` looks like:   
->;Escherichia-Shigella; red   
->;Klebsiella; blue    
->;Salmonella; green   
->;Vibrio; yellow   
->;Haemophilus; pink   
->;Serratia; magenta   
->;Enterobacter; brown   
->;Citrobacter; lightgreen   
+  >;Escherichia-Shigella; red   
+  >;Klebsiella; blue    
+  >;Salmonella; green   
+  >;Vibrio; yellow   
+  >;Haemophilus; pink   
+  >;Serratia; magenta   
+  >;Enterobacter; brown   
+  >;Citrobacter; lightgreen   
 
 => then go to R scripts or HTML Utilities in this repository for analysis and visualization of the CAPASYDIS-generated file.   
 
@@ -318,7 +316,7 @@ $merge3D -i $FileR1R2 -j $FileR1R3 -o output_build_axesv0.1.8_R1_R2_R3/output_R1
 
 ```{sh}
 CSVfile=/path/to/bin/NR99/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
-wc -l $CSCfile                                            # 331664
+wc -l $CSCfile                                            #  331664
 cut --delim=',' -f1  $CSVfile | sort | uniq -c | wc -l    #  331133
 cut --delim=',' -f2  $CSVfile | sort | uniq -c | wc -l    #  331114
 cut --delim=',' -f3  $CSVfile | sort | uniq -c | wc -l    #  330994

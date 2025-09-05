@@ -1,67 +1,70 @@
 # Possible workflow to analyse the NR99 MSA using the provided Golang scripts.
 
 
-## 1. Get the MSA
+## 1). Get the MSA
 
-**NR99:** SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta.gz    
-SILVA release 138 SSU Ref NR 99 138.2 dataset is based on the full SSU Ref 138.2 dataset, in total encompassing 510,508 sequences.
+**NR99:** 
+[SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta.gz](https://www.arb-silva.de/no_cache/download/archive/current/Exports/)    
+
+The SILVA release "138 SSU Ref NR 99 138.2" dataset is based on the full SSU Ref 138.2 dataset.
+
 ```
-num_seqs sum_len min_len avg_len max_len
-510,495 25,524,750,000 50,000 50,000 50,000
+num_seqs          sum_len    min_len avg_len max_len
+510,495    25,524,750,000     50,000  50,000  50,000
 ```
 
-**RNA**
-Number of Sequences:
+**Taxonomic breakdown**
 
-20389 **Archaea** 3.99%
-
-431166 **Bacteria** 84.46%
-
-58940 **Eukaryota** 11.54%
-
-
-**NR99:** ==SILVA_138.2_SSURef\_**NR99**\_tax_silva_full_align_trunc==.fasta.gz
+| Domain  | Number of sequences | Percentage |
+| ------------- |  ---: |  ---: |
+| **Archaea**   | 20389 |3.99%  |
+| **Bacteria**  | 431166  |84.46% |
+| **Eukaryota** | 58940  |84.46%  |
 
 
-## 2. trunCate
+
+## 2). trunCate
 ```{sh}
 DESTDIR=/path/to/SILVA/NR99/output_select_seqs
 l $DESTDIR
 mkdir -p $DESTDIR
 LOG="$DESTDIR/log.txt"
 
-
 truncAte=/path/to/bin/truncAte/truncAte
 $truncAte -v # version:0.3.1
 $truncAte -h
 $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta -j 60 -o $DESTDIR > $LOG
 ```
-<=======================================================================>   
-(Select_seqs version:  0.3.1 )   
+
+<output>
+<summary>Generated output</summary>  
+ 
+ > (Select_seqs version:  0.3.1 )   
 = MSA input file:                        /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta   
 = Output directory:                      /path/to/SILVA/NR99/output_select_seqs   
 => Number of seqs:                       510495   
 => Number of aligned positions:          50000   
 => Threshold applied to keep a position: 0.9   
-<=======================================================================>    
-Results:
-1) After the analysis of the MSA:
-    - the first position matching k is: 1144
-    - the last matching position is:    41788
-(this is before removing columns of only . or -)
+  =======================================================================       
+> Results:
+>  1) After the analysis of the MSA:
+      - the first position matching k is: 1144
+      - the last matching position is:    41788
+  (this is before removing columns of only . or -)
 
-2) After removing sequences with N or wobbles, or starting or ending with .
-    - Final alignment length:            29932
-    - Final number of sequences:         387633
-(387633 / 510495 = 75.9 % of the initial number of sequences)
- <=======================================================================>    
-1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
-Started at:  2025-03-15 15:53:02
-Finished at: 2025-03-15 17:09:25
-Elapsed time 1h16m22.602304458s
+>  2) After removing sequences with N or wobbles, or starting or ending with .
+      - Final alignment length:            29932
+      - Final number of sequences:         387633
+  (387633 / 510495 = 75.9 % of the initial number of sequences)
+  =======================================================================     
+  1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
+  Started at:  2025-03-15 15:53:02
+  Finished at: 2025-03-15 17:09:25
+  Elapsed time 1h16m22.602304458s
+</output>   
 
-# 3. deduplicateseq
-1) deduplicate 
+# 3). deduplicateseq  
+1) deduplicate   
 2) remove the colums of . and - (includes degapping)
 ```{sh}
 DESTDIR=/path/to/SILVA/NR99/output_select_seqs

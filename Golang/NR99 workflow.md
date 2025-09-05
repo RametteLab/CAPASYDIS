@@ -36,7 +36,7 @@ $truncAte -h
 $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trunc.fasta -j 60 -o $DESTDIR > $LOG
 ```
 
-<output>
+
 <summary>Generated output</summary>  
  
  > (Select_seqs version:  0.3.1 )   
@@ -46,22 +46,22 @@ $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trun
 => Number of aligned positions:          50000   
 => Threshold applied to keep a position: 0.9   
   =======================================================================       
-> Results:
->  1) After the analysis of the MSA:
-      - the first position matching k is: 1144
-      - the last matching position is:    41788
-  (this is before removing columns of only . or -)
-
->  2) After removing sequences with N or wobbles, or starting or ending with .
-      - Final alignment length:            29932
-      - Final number of sequences:         387633
-  (387633 / 510495 = 75.9 % of the initial number of sequences)
+> Results:   
+>  1) After the analysis of the MSA:   
+      - the first position matching k is: 1144   
+      - the last matching position is:    41788   
+  (this is before removing columns of only . or -)   
+   
+>  2) After removing sequences with N or wobbles, or starting or ending with .   
+      - Final alignment length:            29932   
+      - Final number of sequences:         387633   
+  (387633 / 510495 = 75.9 % of the initial number of sequences)   
   =======================================================================     
   1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
   Started at:  2025-03-15 15:53:02
   Finished at: 2025-03-15 17:09:25
   Elapsed time 1h16m22.602304458s
-</output>   
+
 
 # 3). deduplicateseq  
 1) deduplicate   

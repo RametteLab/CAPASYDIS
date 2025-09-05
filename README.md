@@ -1,20 +1,21 @@
 *CAPASYDIS* (Cartesian Projections of Asymmetric Distances) 	 
 ===========================================================
 
-## SHORT DESCRIPTION   
+## DESCRIPTION   
 This repository includes the workflow and scripts used to analyze the NR99 dataset presented in the study. 
 The repository is organised as follows: 
-- **R/**   
+- **[R/](https://github.com/RametteLab/CAPASYDIS/tree/main/R)**   
 Implementation in R of the CAPASYDIS main concepts and calculations.
-- **Golang/**  
+- **[Golang/](https://github.com/RametteLab/CAPASYDIS/tree/main/Golang)**  
     Implementation in Golang of the CAPASYDIS workflow.
-- **JavaScript/**   
+- **[JavaScript/](https://github.com/RametteLab/CAPASYDIS/tree/main/JavaScript)**   
     Visualization using D3.js and Three.js.
-- **NR99/**  
+- **[NR99/](https://github.com/RametteLab/CAPASYDIS/tree/main/NR99)**  
     Workflow and scripts used for the NR99 analyses
 
-## ADDITIONAL LINKS
-Software (1st release): https://doi.org/10.5281/zenodo.17061848   
+## ADDITIONAL LINKS  
+**Software**  
+- 1st release: https://doi.org/10.5281/zenodo.17061848   
 
 **Datasets**:   
 - Multiple sequence alignment (MSA) of NR99 after applying CAPASYDIS build_axes: https://doi.org/10.5281/zenodo.17055348   

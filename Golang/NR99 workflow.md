@@ -71,7 +71,7 @@ $dedup -h
 LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
-<summary>Generated output</summary>   $
+<summary>Generated output</summary>   
 
 > (deduplicateseq version:  0.1.1 )     
   = MSA input file:                        /path/to/SILVA/NR99/
@@ -103,9 +103,11 @@ grep ">"  $MSA | cut --delim "_" -f3 | cut --delim ";" -f1 | sort | uniq -c
 
 R -e "round(c(6031,291195,34437)*100/331663,1)" 
 ```
->   6031 Archaea      1.8%     
-> 291195 Bacteria    87.8%     
->  34437 Eukaryota   10.4%     
+> output
+  | --: | :--: |--:|
+  |  6031| Archaea    |  1.8% |
+  |291195| Bacteria   | 87.8% |
+  | 34437| Eukaryota  | 10.4% |
 
 ```{sh}
 seqkit stat $MSA 

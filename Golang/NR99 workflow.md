@@ -61,7 +61,7 @@ $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trun
   Elapsed time 1h16m22.602304458s
 
 
-# 3) deduplicateseq  
+## 3) deduplicateseq  
 1) deduplicate identical sequences   
 2) remove the colums of . and - (includes degapping)
 ```{sh}
@@ -71,22 +71,34 @@ $dedup -h
 LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
-<summary>Generated output</summary>  
+<summary>Generated output</summary>   
 > =======================================================================     
+
   (deduplicateseq version:  0.1.1 )     
-  = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta     
+
+  = MSA input file:                        /path/to/SILVA/NR99/
+  output_select_seqs/output_new_MSA.fasta     
   = Output directory:                      /path/to/SILVA/NR99/output_select_seqs     
+
   => Number of initial seqs:                       387633     
+
   =======================================================================     
+
   Results:     
+
   => Number of final seqs:                         331663     
+
   after deduplication of the sequences     
+
   =======================================================================      
+
   Files 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta     
+
   Elapsed time 10m15.549396749s     
 
 
-**testing to see if well deduplicated**     
+
+**Testing to see if the MSA was really deduplicated**     
 ```{sh}
 seqkit rmdup -s $MSA -o test
 ```
@@ -131,7 +143,7 @@ seqkit grep -n -r -p "__Bacteria" $MSA | seqkit seq -g | seqkit stat
 >Bacteria       291,195  382,530,854    1,036   1,313.7    2,642
 
 
-## 4. buid the axes
+## 4. Build the axes
 position of the Ecoli REF1     
 
 ```{sh}

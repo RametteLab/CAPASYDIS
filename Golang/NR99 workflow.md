@@ -1,4 +1,4 @@
-# Possible workflow to analyse the NR99 MSA using the provided Golang scripts.
+# Workflow to analyse the NR99 MSA using the provided Golang scripts.
 
 
 ## 1) Get the MSA file
@@ -135,7 +135,7 @@ seqkit grep -n -r -p "__Bacteria" $MSA | seqkit seq -g | seqkit stat
 >Bacteria       291,195  382,530,854    1,036   1,313.7    2,642
 
 
-## 2.2. buid the axes
+## 4. buid the axes
 position of the Ecoli REF1     
 
 ```{sh}
@@ -158,11 +158,11 @@ $build_axes -i $MSA -R1 5553 -stat
 
 ```{sh}
 $build_axes -i $MSA -R1 5553 -max
-cat $MSA | grep ">" | grep -n "AJ879131.1.3425" | cut -d ":" -f1 # 149697
+# cat $MSA | grep ">" | grep -n "AJ879131.1.3425" | cut -d ":" -f1 # 149697 position in the MSA
 ```
 >AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379,5553,AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1,149697,0.09833042068099496
 
-# building 2 axes with REF1= Ecoli  REF2=Eukaryota;SAR;Rhizaria
+### Building 2 axes with REF1 (E. coli) and REF2 (Eukaryota;SAR;Rhizaria)
  
  ```{sh}
 output=/path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697
@@ -173,37 +173,37 @@ $build_axes -i $MSA -R1 5553 -R2 149697 -o $output -f > $LOG
 more $LOG
 ```
 
-<summary>Generated output</summary>  
-> =======================================================================     
-Info:   
-= capasydis - version:                   0.1.8   
-= MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
-= Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
-=> Number of sequences:                 331663   
-=> Number of aligned positions:         29932   
-=> Delta values:                         default   
- =======================================================================      
-Details:   
-REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
-REF1 number: 5553   
-- Most distant sequence to REF1:   
-        - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-        - sequence nber: 149697   
-        - value: 0.0983304207   
+<summary>Generated output</summary>    
+
+>Info:    
+> = capasydis - version:                   0.1.8    
+> = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
+> = Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
+> => Number of sequences:                 331663   
+> => Number of aligned positions:         29932   
+> => Delta values:                         default   
+> =======================================================================      
+> Details:   
+> REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
+> REF1 number: 5553   
+> - Most distant sequence to REF1:   
+>         - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+>         - sequence nber: 149697   
+>         - value: 0.0983304207   
 > --------------    
-REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-REF2 number: 149697   
-- Most distant sequence to REF2:   
-        - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
-        - sequence nber: 128973   
-        - value: 0.1298365572   
-Timing:   
-Number of cores (-j): 95    
-Elapsed time: 59.124874951s   
- =======================================================================     
+> REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+> REF2 number: 149697   
+> - Most distant sequence to REF2:   
+>         - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
+>         - sequence nber: 128973   
+>         - value: 0.1298365572   
+> Timing:   
+> Number of cores (-j): 95    
+> Elapsed time: 59.124874951s   
+>  =======================================================================     
 
 
-### coloring E. coli
+### Coloring E. coli and Friends
 Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;   
 Enterobacteriaceae:    
   - Klebsiella,    
@@ -224,19 +224,20 @@ Enterobacteriaceae:
 # $colorCSVTaxonomy -v # version:0.1.2
 # $colorCSVTaxonomy -i $WD/output.csv -o $WD/output_with_color.csv -p $WD/Patterns.tsv
 ```
-;Escherichia-Shigella; red   
-;Klebsiella; blue    
-;Salmonella; green   
-;Vibrio; yellow   
-;Haemophilus; pink   
-;Serratia; magenta   
-;Enterobacter; brown   
-;Citrobacter; lightgreen   
+This is how the `Patterns.tsv` looks like:   
+>;Escherichia-Shigella; red   
+>;Klebsiella; blue    
+>;Salmonella; green   
+>;Vibrio; yellow   
+>;Haemophilus; pink   
+>;Serratia; magenta   
+>;Enterobacter; brown   
+>;Citrobacter; lightgreen   
 
-=> then go to R scripts or HTML Utilities 
+=> then go to R scripts or HTML Utilities in this repository for analysis and visualization of the CAPASYDIS-generated file.   
 
 
-## coloring the domains
+## Coloring by domain
 ```{sh}
 # WD=/path/to/bin/NR99/output_build_axes_R1_5553_R2_149697
 # cd $WD
@@ -249,13 +250,14 @@ Enterobacteriaceae:
 8 seconds   
 
 
-## retrieve AB302407.1.2962
+## Retrieve AB302407.1.2962   
 
 ```{sh}
 # seqkit grep -r -p "AB302407\.1\.2962"  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta | seqkit seq -g
 ```
+NOte: One can also use `findseq`.   
 
-## building 3D coordinates
+### Building the 3D coordinates   
 REF1= Ecoli    (index=5553)   
 REF2=Eukaryota;SAR;Rhizaria  (index=149697)   
 REF3=Archaea (index=128973)   
@@ -278,7 +280,7 @@ head $output/output.csv
 >0.0280990271,0.06384614200000001,AY929368.1.1768__Eukaryota;Archaeplastida;Chloroplastida;Charophyta;Phragmoplastophyta;Streptophyta;Embryophyta;Tracheophyta;
 
 
-## Combine the R1, R2, R3 coordinates
+### Combine the R1, R2, R3 coordinates
 
 ```{sh}
 FileR1R2=/path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv  # R1 R2
@@ -306,7 +308,7 @@ $merge3D -i $FileR1R2 -j $FileR1R3 -o output_build_axesv0.1.8_R1_R2_R3/output_R1
 >Elapsed time: 677.509251 micros   
 
 
-## checking the uniqueness with build_axes -r  for 1e10 (default)
+## Checking the uniqueness with build_axes -r  for 1e10 (default)
 
 ```{sh}
 CSVfile=/path/to/bin/NR99/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv

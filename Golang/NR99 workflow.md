@@ -71,9 +71,9 @@ $dedup -h
 LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
-<summary>Generated output</summary>   
-> =======================================================================     
-  (deduplicateseq version:  0.1.1 )     
+<summary>Generated output</summary>   $
+
+> (deduplicateseq version:  0.1.1 )     
   = MSA input file:                        /path/to/SILVA/NR99/
   output_select_seqs/output_new_MSA.fasta     
   = Output directory:                      /path/to/SILVA/NR99/output_select_seqs     
@@ -169,32 +169,32 @@ more $LOG
 
 <summary>Generated output</summary>    
 
->Info:    
-  > = capasydis - version:                   0.1.8    
-  > = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
-  > = Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
-  > => Number of sequences:                 331663   
-  > => Number of aligned positions:         29932   
-  > => Delta values:                         default   
-  > =======================================================================      
-  > Details:   
-  > REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
-  > REF1 number: 5553   
-  > - Most distant sequence to REF1:   
-  >         - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-  >         - sequence nber: 149697   
-  >         - value: 0.0983304207   
-  > --------------    
-  > REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
-  > REF2 number: 149697   
-  > - Most distant sequence to REF2:   
-  >         - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
-  >         - sequence nber: 128973   
-  >         - value: 0.1298365572   
-  > Timing:   
-  > Number of cores (-j): 95    
-  > Elapsed time: 59.124874951s   
-  >  =======================================================================     
+> Info:  
+   = capasydis - version:                   0.1.8    
+   = MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta   
+   = Data written to:                       /path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697/output.csv   
+   => Number of sequences:                 331663   
+   => Number of aligned positions:         29932   
+   => Delta values:                         default   
+   =======================================================================      
+   Details:   
+   REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
+   REF1 number: 5553   
+   - Most distant sequence to REF1:   
+           - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+           - sequence nber: 149697   
+           - value: 0.0983304207   
+   --------------    
+   REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
+   REF2 number: 149697   
+   - Most distant sequence to REF2:   
+           - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
+           - sequence nber: 128973   
+           - value: 0.1298365572   
+   Timing:   
+   Number of cores (-j): 95    
+   Elapsed time: 59.124874951s   
+    =======================================================================     
 
 
 ### Coloring E. coli and Friends
@@ -218,15 +218,16 @@ Enterobacteriaceae:
 # $colorCSVTaxonomy -v # version:0.1.2
 # $colorCSVTaxonomy -i $WD/output.csv -o $WD/output_with_color.csv -p $WD/Patterns.tsv
 ```
-This is how the `Patterns.tsv` looks like:   
-  >;Escherichia-Shigella; red   
-  >;Klebsiella; blue    
-  >;Salmonella; green   
-  >;Vibrio; yellow   
-  >;Haemophilus; pink   
-  >;Serratia; magenta   
-  >;Enterobacter; brown   
-  >;Citrobacter; lightgreen   
+> This is how the `Patterns.tsv` looks like:   
+  ;Escherichia-Shigella; red   
+  ;Klebsiella; blue    
+  ;Salmonella; green   
+  ;Vibrio; yellow   
+  ;Haemophilus; pink   
+  ;Serratia; magenta   
+  ;Enterobacter; brown   
+  ;Citrobacter; lightgreen   
+
 
 => then go to R scripts or HTML Utilities in this repository for analysis and visualization of the CAPASYDIS-generated file.   
 
@@ -292,12 +293,13 @@ merge3D=/path/to/bin/merge3D/bin
 $merge3D -h
 $merge3D -i $FileR1R2 -j $FileR1R3 -o output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv > output_build_axesv0.1.8_R1_R2_R3/log.txt
 ```
->2025/08/17 15:14:11 Starting CSV merge and validation...   
->2025/08/17 15:14:12 Reached end of both files after processing 331663 rows in each file.   
->2025/08/17 15:14:12 Processing complete. Wrote 331663 records to 'output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.   
->2025/08/17 15:14:12 Script finished successfully.   
->Timing:   
->Elapsed time: 677.509251 micros   
+> **output**
+  2025/08/17 15:14:11 Starting CSV merge and validation...   
+  2025/08/17 15:14:12 Reached end of both files after processing 331663 rows in each file.   
+  2025/08/17 15:14:12 Processing complete. Wrote 331663 records to 'output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.   
+  2025/08/17 15:14:12 Script finished successfully.   
+  Timing:   
+  Elapsed time: 677.509251 micros   
 
 
 ## Checking the uniqueness with build_axes -r  for 1e10 (default)
@@ -311,10 +313,10 @@ cut --delim=',' -f3  $CSVfile | sort | uniq -c | wc -l    #  330994
 head  $CSVfile
 ```
 >x,y,z,label      
-0.032177294,0.0893223508,0.0668218237,HA782847.3.1866__Eukaryota;Amorphea;Obazoa;Opisthokonta;Holozoa;Choanozoa;Metazoa;Animalia;BCP;count_1   
-0.010367972900000001,0.10293579950000001,0.0578364071,AB001521.1.1560__Bacteria;Pseudomonadota;Gammaproteobacteria;Coxiellales;Coxiellaceae;Coxiella;   
-0.027880804000000002,0.0875629124,0.06341756550000001,AY929353.1.1788__Eukaryota;Archaeplastida;Chloroplastida;Charophyta;Phragmoplastophyta;Streptophyta;   
-0.0280990271,0.0874346374,0.06384614200000001,AY929368.1.1768__Eukaryota;Archaeplastida;Chloroplastida;Charophyta;Phragmoplastophyta;Streptophyta;Embryophyta;   
+  0.032177294,0.0893223508,0.0668218237,HA782847.3.1866__Eukaryota;Amorphea;Obazoa;Opisthokonta;Holozoa;Choanozoa;Metazoa;Animalia;BCP;count_1   
+  0.010367972900000001,0.10293579950000001,0.0578364071,AB001521.1.1560__Bacteria;Pseudomonadota;Gammaproteobacteria;Coxiellales;Coxiellaceae;Coxiella;   
+  0.027880804000000002,0.0875629124,0.06341756550000001,AY929353.1.1788__Eukaryota;Archaeplastida;Chloroplastida;Charophyta;Phragmoplastophyta;Streptophyta;   
+  0.0280990271,0.0874346374,0.06384614200000001,AY929368.1.1768__Eukaryota;Archaeplastida;Chloroplastida;Charophyta;Phragmoplastophyta;Streptophyta;Embryophyta;   
 
 
 ## Cleaning the taxonomy

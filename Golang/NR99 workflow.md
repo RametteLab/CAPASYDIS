@@ -1,4 +1,4 @@
-# Workflow to analyse the NR99 MSA using the provided Golang scripts.
+# Workflow to analyse the NR99 MSA using the provided Golang scripts
 
 
 ## 1) Get the MSA file
@@ -58,13 +58,11 @@ $truncAte -f -i /path/to/SILVA/SILVA_138.2_SSURef_NR99_tax_silva_full_align_trun
   (387633 / 510495 = 75.9 % of the initial number of sequences)   
   =======================================================================     
   1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta
-  Started at:  2025-03-15 15:53:02
-  Finished at: 2025-03-15 17:09:25
   Elapsed time 1h16m22.602304458s
 
 
 # 3) deduplicateseq  
-1) deduplicate   
+1) deduplicate identical sequences   
 2) remove the colums of . and - (includes degapping)
 ```{sh}
 DESTDIR=/path/to/SILVA/NR99/output_select_seqs
@@ -75,19 +73,17 @@ $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
 <summary>Generated output</summary>  
 > =======================================================================     
-(deduplicateseq version:  0.1.1 )     
-= MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta     
-= Output directory:                      /path/to/SILVA/NR99/output_select_seqs     
-=> Number of initial seqs:                       387633     
- =======================================================================     
-Results:     
-=> Number of final seqs:                         331663     
-after deduplication of the sequences     
- =======================================================================      
-Files 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta     
-Started at:  2025-03-15 17:38:05     
-Finished at: 2025-03-15 17:48:21     
-Elapsed time 10m15.549396749s     
+>(deduplicateseq version:  0.1.1 )     
+>= MSA input file:                        /path/to/SILVA/NR99/output_select_seqs/output_new_MSA.fasta     
+>= Output directory:                      /path/to/SILVA/NR99/output_select_seqs     
+>=> Number of initial seqs:                       387633     
+> =======================================================================     
+>Results:     
+>=> Number of final seqs:                         331663     
+>after deduplication of the sequences     
+> =======================================================================      
+>Files 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta     
+>Elapsed time 10m15.549396749s     
 
 
 **testing to see if well deduplicated**     
@@ -303,8 +299,6 @@ $merge3D -i $FileR1R2 -j $FileR1R3 -o output_build_axesv0.1.8_R1_R2_R3/output_R1
 >2025/08/17 15:14:12 Processing complete. Wrote 331663 records to 'output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.   
 >2025/08/17 15:14:12 Script finished successfully.   
 >Timing:   
->Started at:  2025-03-29 18:51:24   
->Finished at: 2025-03-29 18:51:25   
 >Elapsed time: 677.509251 micros   
 
 

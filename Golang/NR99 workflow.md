@@ -113,8 +113,10 @@ R -e "round(c(6031,291195,34437)*100/331663,1)"
 ```{sh}
 seqkit stat $MSA 
 ```
-  >num_seqs       sum_len  min_len  avg_len  max_len     
-  >331,663  9,927,336,916   29,932   29,932   29,932
+
+| Number of sequences |  sum_len | min_len | avg_len | max_len |
+| ---: | ---: | ---: | ---: | ---: |
+|331,663|  9,927,336,916|   29,932|   29,932|   29,932|
 
 
 ### What is the size ranges in the different domains     

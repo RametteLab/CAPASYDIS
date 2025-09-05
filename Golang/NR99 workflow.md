@@ -72,31 +72,19 @@ LOG2="$DESTDIR/log2_dedup.txt"
 $dedup -i $DESTDIR/output_new_MSA.fasta -j 30 -o $DESTDIR -f > $LOG2
 ```
 <summary>Generated output</summary>   
-
 > =======================================================================     
-
   (deduplicateseq version:  0.1.1 )     
-
   = MSA input file:                        /path/to/SILVA/NR99/
   output_select_seqs/output_new_MSA.fasta     
   = Output directory:                      /path/to/SILVA/NR99/output_select_seqs     
-
   => Number of initial seqs:                       387633     
-
   =======================================================================     
-
   Results:     
-
   => Number of final seqs:                         331663     
-
   after deduplication of the sequences     
-
   =======================================================================      
-
   Files 1 FASTA file  written successfully to:  /path/to/SILVA/NR99/output_select_seqs/dedup_MSA.fasta     
-
   Elapsed time 10m15.549396749s     
-
 
 
 **Testing to see if the MSA was really deduplicated**     

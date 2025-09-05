@@ -127,11 +127,13 @@ seqkit grep -n -r -p "__Eukaryota" $MSA | seqkit seq -g | seqkit stat
 seqkit grep -n -r -p "__Bacteria" $MSA | seqkit seq -g | seqkit stat
 
 ```
->              num_seqs      sum_len  min_len   avg_len  max_len
->Archaea          6,031    7,712,784      842   1,278.9    2,787
->Eukaryota       34,437   55,283,935    1,087   1,605.4    3,232
->Bacteria       291,195  382,530,854    1,036   1,313.7    2,642
-=> taking then E. coli "AB035920.964.2505" as it was rather abundant     
+| Domain | Number of sequences |  sum_len | min_len | avg_len | max_len |
+|Archaea   |       6,031   | 7,712,784 |     842|   1,278.9  |  2,787|
+|Eukaryota |      34,437  | 55,283,935 |   1,087 |  1,605.4  |  3,232|
+|Bacteria   |    291,195 | 382,530,854 |   1,036 |  1,313.7  |  2,642|
+
+
+=> taking then *E. coli* "AB035920.964.2505" as it was rather abundant sequence-wise in the dataset.    
 
 
 ## 4) Build the axes
@@ -140,7 +142,7 @@ position of the Ecoli REF1
 ```{sh}
 cat $MSA | grep ">" | grep -n "AB035920.964.2505" | cut -d ":" -f1
 ```
-5553     
+5553 # position in the MSA    
 
 ```{sh}
 build_axes=/path/to/bin/build_axes
@@ -161,7 +163,7 @@ $build_axes -i $MSA -R1 5553 -max
 ```
 >AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379,5553,AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1,149697,0.09833042068099496
 
-### Building 2 axes with REF1 (E. coli) and REF2 (Eukaryota;SAR;Rhizaria)
+### Building 2 axes with REF1 (*E. coli*) and REF2 (Eukaryota;SAR;Rhizaria)
  
  ```{sh}
 output=/path/to/bin/NR99/output_build_axesv0.1.8_R1_5553_R2_149697
@@ -185,33 +187,33 @@ more $LOG
    Details:   
    REF1 name: AB035920.964.2505__Bacteria;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;Escherichia;count_379   
    REF1 number: 5553   
-   - Most distant sequence to REF1:   
+>   - Most distant sequence to REF1:   
            - name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
            - sequence nber: 149697   
            - value: 0.0983304207   
    --------------    
    REF2 name: AJ879131.1.3425__Eukaryota;SAR;Rhizaria;Retaria;Foraminifera;Globothalamea;Rotaliida;Nummulitidae;Heterostegina;Heterostegina;count_1   
    REF2 number: 149697   
-   - Most distant sequence to REF2:   
+>   - Most distant sequence to REF2:   
            - name: AB302407.1.2962__Archaea;Thermoproteota;Thermoproteia;Thermoproteales;Thermoproteaceae;Pyrobaculum;Pyrobaculum;count_1   
            - sequence nber: 128973   
            - value: 0.1298365572   
    Timing:   
    Number of cores (-j): 95    
    Elapsed time: 59.124874951s   
-    =======================================================================     
+  =======================================================================     
 
 
-### Coloring E. coli and Friends
+### Coloring *E. coli* and Friends
 Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella;   
 Enterobacteriaceae:    
-  - Klebsiella,    
-  - Enterobacter,    
-  - Citrobacter,    
-  - Salmonella,    
-  - Escherichia coli,    
-  - Shigella,    
-  - (Proteus, Serratia and other species)   
+  - *Escherichia coli*    
+  - *Klebsiella*    
+  - *Enterobacter*    
+  - *Citrobacter*    
+  - *Salmonella*    
+  - *Shigella*    
+  - (*Proteus*, *Serratia* and other species)   
 
 ```{sh}
 # WD=/path/to/bin/NR99/output_build_axes_R1_5553_R2_149697
@@ -223,8 +225,8 @@ Enterobacteriaceae:
 # $colorCSVTaxonomy -v # version:0.1.2
 # $colorCSVTaxonomy -i $WD/output.csv -o $WD/output_with_color.csv -p $WD/Patterns.tsv
 ```
-> This is how the `Patterns.tsv` looks like:   
-  ;Escherichia-Shigella; red   
+This is how the `Patterns.tsv` looks like:   
+> ;Escherichia-Shigella; red   
   ;Klebsiella; blue    
   ;Salmonella; green   
   ;Vibrio; yellow   
@@ -234,7 +236,7 @@ Enterobacteriaceae:
   ;Citrobacter; lightgreen   
 
 
-=> then go to R scripts or HTML Utilities in this repository for analysis and visualization of the CAPASYDIS-generated file.   
+=> then go to the [R scripts](https://github.com/RametteLab/CAPASYDIS/tree/main/NR99/R%20scripts) or [HTML Utilities](https://github.com/RametteLab/CAPASYDIS/tree/main/JavaScript) in this repository for analysis and visualization of the CAPASYDIS-generated file.   
 
 
 ## Coloring by domain

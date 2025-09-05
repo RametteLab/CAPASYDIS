@@ -128,12 +128,13 @@ seqkit grep -n -r -p "__Bacteria" $MSA | seqkit seq -g | seqkit stat
 
 ```
 | Domain | Number of sequences |  sum_len | min_len | avg_len | max_len |
+| :---: | ---: | ---: | ---: | ---: | ---: |
 |Archaea   |       6,031   | 7,712,784 |     842|   1,278.9  |  2,787|
 |Eukaryota |      34,437  | 55,283,935 |   1,087 |  1,605.4  |  3,232|
 |Bacteria   |    291,195 | 382,530,854 |   1,036 |  1,313.7  |  2,642|
 
 
-=> taking then *E. coli* "AB035920.964.2505" as it was rather abundant sequence-wise in the dataset.    
+=> Taking then *E. coli* "AB035920.964.2505" as reference 1, because it was rather abundant sequence-wise in the dataset.    
 
 
 ## 4) Build the axes

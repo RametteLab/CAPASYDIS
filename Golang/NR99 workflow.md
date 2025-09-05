@@ -103,11 +103,12 @@ grep ">"  $MSA | cut --delim "_" -f3 | cut --delim ";" -f1 | sort | uniq -c
 
 R -e "round(c(6031,291195,34437)*100/331663,1)" 
 ```
-> output
-  | --: | :--: |--:|
-  |  6031| Archaea    |  1.8% |
-  |291195| Bacteria   | 87.8% |
-  | 34437| Eukaryota  | 10.4% |
+
+| Number of sequences | Domain | Percentage |
+| ---: | :---: | ---: |
+|  6031| Archaea    |  1.8% |
+|291195| Bacteria   | 87.8% |
+| 34437| Eukaryota  | 10.4% |
 
 ```{sh}
 seqkit stat $MSA 

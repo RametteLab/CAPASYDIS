@@ -79,7 +79,7 @@ This will print the detail output of the tests that were developed to create the
 It can be used as a documentation of the expected behavior of the implemented functions.
 
 ## Disclaimer
-a) This is my first (large) Golang project. The code base and code structure will most likely need some revision.   
+a) This is my first (large) Golang project.   
 b) The scripts have been developed to be used on Linux servers.
 Other operating systems have not been tested. 
 

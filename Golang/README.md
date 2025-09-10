@@ -68,6 +68,15 @@ go run main.go -h
 ```
 See then the *help* for further instructions about the possible flags and parameters.
 
+## 5. Check the test to see how the functions work
+To inspect the implemented functions in each of the package directories, you can run the following:
+
+```
+cd colorCSVTaxonomy/ # for instance
+go test -v  -run Test ./... -count=1
+```
+This will print the detail output of the tests that were developed to create the main functions. 
+It can be used as a documentation of the expected behavior of the implemented functions.
 
 ## Disclaimer
 a) This is my first (large) Golang project. The code base and code structure will most likely need some revision.   

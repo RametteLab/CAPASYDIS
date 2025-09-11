@@ -28,7 +28,7 @@ Implementation in R of the CAPASYDIS main concepts and calculations.
 - Seqverse of Bacteria: https://zenodo.org/records/17049222   
 - Seqverse of Eukaryota: https://zenodo.org/records/17049247   
 
-** Citation**
+**Associated study**   
 [https://www.biorxiv.org/content/10.1101/2025.09.04.674223v1](https://www.biorxiv.org/content/10.1101/2025.09.04.674223v1)
 
 

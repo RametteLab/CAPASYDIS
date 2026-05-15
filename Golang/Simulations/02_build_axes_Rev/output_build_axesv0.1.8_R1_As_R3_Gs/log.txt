@@ -1,0 +1,29 @@
+=======================================================================
+Info:
+= capasydis - version:			 0.1.8
+= MSA input file:			 Simulations/02_build_axes_Rev/sequences10basesRev.fasta
+= Data written to:			 Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv
+=> Number of sequences:			1048576
+=> Number of aligned positions:		10
+=> Delta values:			 default
+=======================================================================
+Details:
+REF1 name: S0aaaaa_R
+REF1 number: 1
+- Most distant sequence to REF1:
+	- name: S10atxbh_R
+	- sequence nber: 349526
+	- value: 0.729335316
+--------------
+REF2 name: S10bnuco_R
+REF2 number: 699051
+- Most distant sequence to REF2:
+	- name: S10chrdv_R
+	- sequence nber: 1048576
+	- value: 0.694906845
+Timing:
+Started at:  2026-05-11 14:33:54
+Finished at: 2026-05-11 14:34:02
+Number of cores (-j): 95 
+Elapsed time: [31m7.097924613s[0m
+=======================================================================

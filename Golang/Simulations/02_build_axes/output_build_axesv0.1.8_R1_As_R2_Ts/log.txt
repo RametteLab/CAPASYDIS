@@ -1,8 +1,8 @@
 =======================================================================
 Info:
 = capasydis - version:			 0.1.8
-= MSA input file:			 /home/aramette/projects/DISCOMP/Simulations/01_create_sequences/sequences10bases.fasta
-= Data written to:			 /home/aramette/projects/DISCOMP/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+= MSA input file:			 Simulations/01_create_sequences/sequences10bases.fasta
+= Data written to:			 Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
 => Number of sequences:			1048576
 => Number of aligned positions:		10
 => Delta values:			 default

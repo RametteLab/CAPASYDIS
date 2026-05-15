@@ -1,1 +1,537 @@
+---
+title: Simulations 
+---
 
+# Data creation
+```{sh}
+WD=PathToProject/CAPASYDIS/Simulations
+cd $WD/01_create_sequences
+go run create_sequences.go 
+```
+01_create_sequences.go
+	creates all combinations
+	the headers reflect the number of mutations 	
+	bases {'A', 'T', 'G', 'C'}
+	>S0aaaaa
+    AAAAAAAAAA
+    >S1aaaab
+    TAAAAAAAAA
+    >S1aaaac
+
+
+# CAPASYDIS build_axes_0.1.8
+```{sh}
+build_axes=PathToProject/CAPASYDIS/capasydis_go/build_axes_0.1.8 # compiled version
+inputMSA=PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+$build_axes -v
+$build_axes -h
+
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -i $inputMSA -R1 1 -stat
+```    
+1,S0aaaaa,0.3422929205,0.1036973149,0.729335316_:_seqNber,ID,Mean,SD,Max
+
+```{sh}
+ $build_axes -i $inputMSA -R1 1 -max
+```
+S0aaaaa,1,S10atxbh,349526,0.7293353159558736
+
+
+```{sh}
+grep -A1 "S10atxbh" $inputMSA 
+```
+>S10atxbh
+TTTTTTTTTT
+
+
+```{sh}
+$build_axes -i $inputMSA -R1 349526 -max
+```
+S10atxbh,349526,S0aaaaa,1,0.6691823746923862
+
+```{sh}
+grep -A1 "S0aaaaa" $inputMSA 
+```
+    S0aaaaa <-> S10atxbh
+    (AAAAAAAAAA <-> TTTTTTTTTT)
+
+
+```{sh}
+grep -B1 "GGGGGGGGGG" $inputMSA 
+```
+    >S10bnuco
+    GGGGGGGGGG
+
+```{sh}
+conda activate golang_1.24.5
+```
+
+#find the index of S10bnuco
+```{sh}
+seqkit seq -n $inputMSA \
+| nl -ba \
+| grep 'S10bnuco'
+```
+699051  S10bnuco
+
+**testing**
+```{sh}
+$build_axes -i $inputMSA -R1 699051 -stat
+```
+699051,S10bnuco,0.3285576693,0.1006030757,0.694906845_:_seqNber,ID,Mean,SD,Max
+
+|**index** |  **sequence**  |   **name**|
+|------|------|------|
+|1      | AAAAAAAAAA |S0aaaaa| "As"
+|349526  | TTTTTTTTTT |  S10atxbh| "Ts"
+|699051 | GGGGGGGGGG  | S10bnuco|
+
+# building 2 axes with REF1=1  REF2=349526
+  ```{sh}
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -v #version:0.1.8
+$build_axes -i $inputMSA -R1 1 -R2 349526 -o $output -f > $LOG
+more $LOG
+```
+    =======================================================================
+    Info:
+    = capasydis - version:                   0.1.8
+    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+    => Number of sequences:                 1048576
+    => Number of aligned positions:         10
+    => Delta values:                         default
+    =======================================================================
+    Details:
+    REF1 name: S0aaaaa
+    REF1 number: 1
+    - Most distant sequence to REF1:
+            - name: S10atxbh
+            - sequence nber: 349526
+            - value: 0.729335316
+    --------------
+    REF2 name: S10atxbh
+    REF2 number: 349526
+    - Most distant sequence to REF2:
+            - name: S0aaaaa
+            - sequence nber: 1
+            - value: 0.6691823747
+    Timing:
+    Started at:  2026-04-27 14:47:06
+    Finished at: 2026-04-27 14:47:13
+    Number of cores (-j): 95 
+    Elapsed time: 6.967695137s
+    =======================================================================
+
+
+# building 2 axes with REF1=1  REF3=699051
+ |699051 | GGGGGGGGGG  | S10bnuco|
+ ```{sh}
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -v #version:0.1.8
+$build_axes -i $inputMSA -R1 1 -R2 699051 -o $output -f > $LOG
+more $LOG
+```
+    =======================================================================
+    Info:
+    = capasydis - version:                   0.1.8
+    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv
+    => Number of sequences:                 1048576
+    => Number of aligned positions:         10
+    => Delta values:                         default
+    =======================================================================
+    Details:
+    REF1 name: S0aaaaa
+    REF1 number: 1
+    - Most distant sequence to REF1:
+            - name: S10atxbh
+            - sequence nber: 349526
+            - value: 0.729335316
+    --------------
+    REF2 name: S10bnuco
+    REF2 number: 699051
+    - Most distant sequence to REF2:
+            - name: S10chrdv
+            - sequence nber: 1048576
+            - value: 0.694906845
+    Timing:
+    Started at:  2026-04-28 13:28:52
+    Finished at: 2026-04-28 13:28:59
+    Number of cores (-j): 95 
+    Elapsed time: 7.186440244s
+    =======================================================================
+
+
+# aggregating the info
+
+```{sh}
+mkdir -p PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
+merge3D=PathToProject/CAPASYDIS/merge3D/bin
+FileR1R2=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
+FileR1R3=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
+mergedOutput=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+            
+
+$merge3D -h
+$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/log.txt
+```
+    2026/04/28 13:34:14 Starting CSV merge and validation...
+    2026/04/28 13:34:15 Reached end of both files after processing 1048576 rows in each file.
+    2026/04/28 13:34:15 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
+    2026/04/28 13:34:15 Script finished successfully.
+
+
+## Checking the decimals for each file
+
+```{sh}
+wc -l $mergedOutput #1048577
+head $mergedOutput 
+```
+    x,y,z,label
+    0,0.6691823747,0.0778113585,S0aaaaa
+    0.1435747169,0.5374491816,0.1690887007,S1aaaab
+    0.0182533514,0.6529889579,0.0623373963,S1aaaac
+    0.10819395750000001,0.5708622363,0.1989429388,S1aaaad
+
+
+# checking uniqueness with build_axes -r  for 1e10 (default)
+
+```{sh}
+wc -l $mergedOutput                                            #  1048577
+cut --delim=',' -f1  $mergedOutput | sort | uniq -c | wc -l    #  1048509
+cut --delim=',' -f2  $mergedOutput | sort | uniq -c | wc -l    #  1048477
+cut --delim=',' -f3  $mergedOutput | sort | uniq -c | wc -l    #  1048470
+
+cut --delim=',' -f1,2  $mergedOutput | sort | uniq -c | wc -l   #1048577  <--- confirmation that 2D unique
+cut --delim=',' -f1,2,3  $mergedOutput | sort | uniq -c | wc -l #1048577  <--- confirmation that 3D unique
+```
+
+# coloring the sequences in the 3D space with number of mutations (number of A, T, G, C) and checking the clustering
+
+```{sh}
+cd $WD/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
+
+#avoiding collision changing S10 to S_10 in the output_R1_R2_R3.csv file
+cp output_R1_R2_R3.csv output_R1_R2_R3_modif.csv
+sed -i 's/S10/S_10/g' output_R1_R2_R3_modif.csv
+wc -l output_R1_R2_R3_modif.csv #1048577
+code Patterns.tsv
+```
+   "S_10" -> saddlebrown
+    "S1" ->  red
+    "S2" -> deeppink
+    "S3" -> magenta
+    "S4" -> mediumorchid
+    "S5" -> blue
+    "S6" -> deepskyblue3
+    "S7" -> green3
+    "S8" -> palegreen2
+    "S9" -> sienna3
+
+
+```{sh}
+WD=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
+colorCSVTaxonomy=PathToProject/CAPASYDIS/colorCSVTaxonomy/bin/colorCSVTaxonomy_v0.1.3
+$colorCSVTaxonomy -h
+$colorCSVTaxonomy -v # version:0.1.3
+inputCSV=$WD/output_R1_R2_R3_modif.csv
+outputCSV=$WD/output_R1_R2_R3_with_color.csv
+$colorCSVTaxonomy -i $inputCSV -o $outputCSV -p Patterns.tsv
+```
+
+    =======================================================================
+    Files:
+    -Input file:     PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+    - header detected
+    - 3D csv file (x,y,z,label)
+    -Output file:    PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3_with_color.csv
+
+    Pattern used for coloring:
+    "S_10" .... [saddlebrown]
+    "S1" .... [ red]
+    "S3" .... [magenta]
+    "S4" .... [mediumorchid]
+    "S6" .... [deepskyblue3]
+    "S2" .... [deeppink]
+    "S5" .... [blue]
+    "S7" .... [green3]
+    "S8" .... [palegreen2]
+    "S9" .... [sienna3]
+
+    Timing:
+    Started at:  2026-05-12 13:40:45
+    Finished at: 2026-05-12 13:41:27
+    Elapsed time: 42.839060716s
+    =======================================================================
+
+
+=> then go to R
+
+
+```{sh}
+# code $WD/output_with_color.csv
+```
+x,y,label,color
+
+
+# -------------------------------------------------------------------------------------------
+# reverse only!!! (to see the effects of 5' and 3' ends on the values)
+# ------------------------------------------------------------------------------------------
+```{sh}
+conda activate golang_1.24.5
+
+
+mkdir $WD/02_build_axes_RC
+cd $WD/02_build_axes_RC
+
+inputMSA=PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+Reverse=PathToProject/CAPASYDIS/reversecomplement/main.go
+
+go  run $Reverse -i $inputMSA -r -o sequences10basesRev.fasta 
+```
+
+# CAPASYDIS build_axes_0.1.8
+```{sh}
+build_axes=PathToProject/CAPASYDIS/capasydis_go/build_axes_0.1.8 # compiled version
+inputMSA=$WD/02_build_axes_Rev/sequences10basesRev.fasta
+$build_axes -v
+$build_axes -h
+
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -i $inputMSA -R1 1 -stat
+```    
+1,S0aaaaa_R,0.3422929205,0.1036973149,0.729335316_:_seqNber,ID,Mean,SD,Max
+##same result
+
+
+```{sh}
+$build_axes -i $inputMSA -R1 1 -max
+```
+S0aaaaa_R,1,S10atxbh_R,349526,0.7293353159558736
+#S0aaaaa, 1,S10atxbh,  349526,0.7293353159558736 #same result
+
+```{sh}
+grep -A1 "S10atxbh" $inputMSA 
+```
+>S10atxbh_R
+TTTTTTTTTT
+#same result
+
+
+```{sh}
+$build_axes -i $inputMSA -R1 349526 -max
+```
+#S10atxbh_R,349526,S0aaaaa_R,1,0.6691823746923862
+#S10atxbh,349526,S0aaaaa,1,0.6691823746923862 # for comparison
+
+```{sh}
+grep -A1 "S0aaaaa" $inputMSA 
+```
+    S0aaaaa_R <-> S10atxbh
+    (AAAAAAAAAA <-> TTTTTTTTTT)
+
+
+```{sh}
+grep -B1 "GGGGGGGGGG" $inputMSA 
+```
+    >S10bnuco_R
+    GGGGGGGGGG
+
+```{sh}
+conda activate golang_1.24.5
+```
+
+#find the index of S10bnuco
+```{sh}
+seqkit seq -n $inputMSA \
+| nl -ba \
+| grep 'S10bnuco'
+```
+699051  S10bnuco_R #same result
+
+**testing**
+```{sh}
+$build_axes -i $inputMSA -R1 699051 -stat
+```
+699051,S10bnuco_R,0.3285576693,0.1006030757,0.694906845_:_seqNber,ID,Mean,SD,Max
+<!-- 699051,S10bnuco,0.3285576693,0.1006030757,0.694906845_:_seqNber,ID,Mean,SD,Max -->
+
+| **index** | **sequence** | **name**   |
+| --------- | ------------ | ---------- |
+| 1         | AAAAAAAAAA   | S0aaaaa_R  | "As"
+| 349526    | TTTTTTTTTT   | S10atxbh_R | "Ts"
+| 699051    | GGGGGGGGGG   | S10bnuco_R | "Gs"
+
+
+# building 2 axes with REF1=1  REF2=349526
+  ```{sh}
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -v #version:0.1.8
+$build_axes -i $inputMSA -R1 1 -R2 349526 -o $output -f > $LOG
+more $LOG
+```
+    =======================================================================
+    Info:
+    = capasydis - version:                   0.1.8
+    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/sequences10basesRev.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+    => Number of sequences:                 1048576
+    => Number of aligned positions:         10
+    => Delta values:                         default
+    =======================================================================
+    Details:
+    REF1 name: S0aaaaa_R
+    REF1 number: 1
+    - Most distant sequence to REF1:
+            - name: S10atxbh_R
+            - sequence nber: 349526
+            - value: 0.729335316
+    --------------
+    REF2 name: S10atxbh_R
+    REF2 number: 349526
+    - Most distant sequence to REF2:
+            - name: S0aaaaa_R
+            - sequence nber: 1
+            - value: 0.6691823747
+    Timing:
+    Started at:  2026-05-11 14:32:34
+    Finished at: 2026-05-11 14:32:41
+    Number of cores (-j): 95 
+    Elapsed time: 7.078393362s
+    =======================================================================
+
+
+# building 2 axes with REF1=1  REF3=699051
+ |699051 | GGGGGGGGGG  | S10bnuco|
+ ```{sh}
+output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs
+mkdir -p $output
+LOG=$output/log.txt
+$build_axes -v #version:0.1.8
+$build_axes -i $inputMSA -R1 1 -R2 699051 -o $output -f > $LOG
+more $LOG
+```
+    =======================================================================
+    Info:
+    = capasydis - version:                   0.1.8
+    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/sequences10basesRev.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output
+    .csv
+    => Number of sequences:                 1048576
+    => Number of aligned positions:         10
+    => Delta values:                         default
+    =======================================================================
+    Details:
+    REF1 name: S0aaaaa_R
+    REF1 number: 1
+    - Most distant sequence to REF1:
+            - name: S10atxbh_R
+            - sequence nber: 349526
+            - value: 0.729335316
+    --------------
+    REF2 name: S10bnuco_R
+    REF2 number: 699051
+    - Most distant sequence to REF2:
+            - name: S10chrdv_R
+            - sequence nber: 1048576
+            - value: 0.694906845
+    Timing:
+    Started at:  2026-05-11 14:33:54
+    Finished at: 2026-05-11 14:34:02
+    Number of cores (-j): 95 
+    Elapsed time: 7.097924613s
+    =======================================================================
+
+
+# aggregating the info
+
+```{sh}
+mkdir -p PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
+merge3D=PathToProject/CAPASYDIS/merge3D/bin
+FileR1R2=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
+FileR1R3=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
+mergedOutput=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+            
+
+$merge3D -h
+$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/log.txt
+```
+    2026/05/11 14:35:45 Starting CSV merge and validation...
+    2026/05/11 14:35:46 Reached end of both files after processing 1048576 rows in each file.
+    2026/05/11 14:35:46 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
+    2026/05/11 14:35:46 Script finished successfully.
+
+
+## Checking the decimals for each file
+
+```{sh}
+head $mergedOutput
+```
+    x,y,z,label
+    0,0.6691823747,0.0778113585,S0aaaaa_R
+    0.046200672000000005,0.6267921671000001,0.1071856972,S1aaaab_R
+    0.0057851652,0.6638928209,0.0729070849,S1aaaac_R
+    0.0346677431,0.6374055679,0.11695768690000001,S1aaaad_R
+    0.0486890314,0.6245090386000001,0.10876778720000001,S1aaaae_R
+
+
+# checking uniqueness with build_axes -r  for 1e10 (default)
+
+```{sh}
+wc -l $mergedOutput                                            #  1048577
+cut --delim=',' -f1  $mergedOutput | sort | uniq -c | wc -l    #  1048509
+cut --delim=',' -f2  $mergedOutput | sort | uniq -c | wc -l    #  1048477
+cut --delim=',' -f3  $mergedOutput | sort | uniq -c | wc -l    #  1048470
+
+cut --delim=',' -f1,2  $mergedOutput | sort | uniq -c | wc -l   #1048577  <--- confirmation that 2D unique
+cut --delim=',' -f1,2,3  $mergedOutput | sort | uniq -c | wc -l #1048577  <--- confirmation that 3D unique
+```
+Conclusion: exactly the same results as for the forward sequences
+
+# coloring the sequences in the 3D space with number of mutations (number of A, T, G, C) and checking the clustering
+
+```{sh}
+cd $WD/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
+cp $WD/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/Patterns.tsv .
+cp output_R1_R2_R3.csv output_R1_R2_R3_modif.csv
+sed -i 's/S10/S_10/g' output_R1_R2_R3_modif.csv
+
+more Patterns.tsv
+```
+   "S_10" -> saddlebrown
+    "S1" ->  red
+    "S2" -> deeppink
+    "S3" -> magenta
+    "S4" -> mediumorchid
+    "S5" -> blue
+    "S6" -> deepskyblue3
+    "S7" -> green3
+    "S8" -> palegreen2
+    "S9" -> sienna3
+
+
+```{sh}
+WD=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
+colorCSVTaxonomy=PathToProject/CAPASYDIS/colorCSVTaxonomy/bin/colorCSVTaxonomy_v0.1.3
+$colorCSVTaxonomy -h
+$colorCSVTaxonomy -v # version:0.1.3
+inputCSV=$WD/output_R1_R2_R3_modif.csv
+outputCSV=$WD/output_R1_R2_R3_with_color.csv
+$colorCSVTaxonomy -i $inputCSV -o $outputCSV -p Patterns.tsv
+```
+    Timing:
+    Started at:  2026-05-12 13:47:30
+    Finished at: 2026-05-12 13:48:13
+    Elapsed time: 42.909876275s
+ 

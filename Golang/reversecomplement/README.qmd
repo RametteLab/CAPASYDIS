@@ -1,1 +1,12 @@
+Usage:
+go run main.go
 
+Parameters:
+  -i string
+        input multi-FASTA file
+  -o string
+        output FASTA file
+  -r    
+        reverse sequences only
+  -rc   
+        reverse-complement sequences

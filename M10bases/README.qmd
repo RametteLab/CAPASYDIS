@@ -4,29 +4,30 @@ title: Analysis of a fully-mutated 10-base long sequence
 
 # Data creation
 ```{sh}
-WD=PathToProject/CAPASYDIS/Simulations
+WD=PathToProject/CAPASYDIS/M10bases
 cd $WD/01_create_sequences
 go run create_sequences.go 
 ```
 01_create_sequences.go
-	creates all combinations
-	the headers reflect the number of mutations 	
-	bases {'A', 'T', 'G', 'C'}
+The script creates all combinations of a n-base long sequence for the bases {'A', 'T', 'G', 'C'}.
+The headers reflect the number of mutations present in each sequence. E.g. 	
+For now the script is hard-coded for sequenceLength = 10 bases, with labelLength = 5. 
 	>S0aaaaa
     AAAAAAAAAA
     >S1aaaab
     TAAAAAAAAA
     >S1aaaac
-
+    GAAAAAAAAA
+    ...
 
 # CAPASYDIS build_axes_0.1.8
 ```{sh}
 build_axes=PathToProject/CAPASYDIS/capasydis_go/build_axes_0.1.8 # compiled version
-inputMSA=PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+inputMSA=PathToProject/CAPASYDIS/M10bases/01_create_sequences/sequences10bases.fasta #that could be a big file
 $build_axes -v
 $build_axes -h
 
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -i $inputMSA -R1 1 -stat
@@ -90,7 +91,7 @@ $build_axes -i $inputMSA -R1 699051 -stat
 
 # building 2 axes with REF1=1  REF2=349526
   ```{sh}
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -v #version:0.1.8
@@ -100,8 +101,8 @@ more $LOG
     =======================================================================
     Info:
     = capasydis - version:                   0.1.8
-    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
-    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+    = MSA input file:                        PathToProject/CAPASYDIS/M10bases/01_create_sequences/sequences10bases.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
     => Number of sequences:                 1048576
     => Number of aligned positions:         10
     => Delta values:                         default
@@ -131,7 +132,7 @@ more $LOG
 # building 2 axes with REF1=1  REF3=699051
  |699051 | GGGGGGGGGG  | S10bnuco|
  ```{sh}
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -v #version:0.1.8
@@ -141,8 +142,8 @@ more $LOG
     =======================================================================
     Info:
     = capasydis - version:                   0.1.8
-    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
-    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv
+    = MSA input file:                        PathToProject/CAPASYDIS/M10bases/01_create_sequences/sequences10bases.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv
     => Number of sequences:                 1048576
     => Number of aligned positions:         10
     => Delta values:                         default
@@ -172,19 +173,19 @@ more $LOG
 # aggregating the info
 
 ```{sh}
-mkdir -p PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
+mkdir -p PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
 merge3D=PathToProject/CAPASYDIS/merge3D/bin
-FileR1R2=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
-FileR1R3=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
-mergedOutput=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+FileR1R2=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
+FileR1R3=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
+mergedOutput=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
             
 
 $merge3D -h
-$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/log.txt
+$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/log.txt
 ```
     2026/04/28 13:34:14 Starting CSV merge and validation...
     2026/04/28 13:34:15 Reached end of both files after processing 1048576 rows in each file.
-    2026/04/28 13:34:15 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
+    2026/04/28 13:34:15 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
     2026/04/28 13:34:15 Script finished successfully.
 
 
@@ -237,7 +238,7 @@ code Patterns.tsv
 
 
 ```{sh}
-WD=PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
+WD=PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3
 colorCSVTaxonomy=PathToProject/CAPASYDIS/colorCSVTaxonomy/bin/colorCSVTaxonomy_v0.1.3
 $colorCSVTaxonomy -h
 $colorCSVTaxonomy -v # version:0.1.3
@@ -248,10 +249,10 @@ $colorCSVTaxonomy -i $inputCSV -o $outputCSV -p Patterns.tsv
 
     =======================================================================
     Files:
-    -Input file:     PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+    -Input file:     PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
     - header detected
     - 3D csv file (x,y,z,label)
-    -Output file:    PathToProject/CAPASYDIS/Simulations/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3_with_color.csv
+    -Output file:    PathToProject/CAPASYDIS/M10bases/02_build_axes/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3_with_color.csv
 
     Pattern used for coloring:
     "S_10" .... [saddlebrown]
@@ -291,7 +292,7 @@ conda activate golang_1.24.5
 mkdir $WD/02_build_axes_RC
 cd $WD/02_build_axes_RC
 
-inputMSA=PathToProject/CAPASYDIS/Simulations/01_create_sequences/sequences10bases.fasta
+inputMSA=PathToProject/CAPASYDIS/M10bases/01_create_sequences/sequences10bases.fasta
 Reverse=PathToProject/CAPASYDIS/reversecomplement/main.go
 
 go  run $Reverse -i $inputMSA -r -o sequences10basesRev.fasta 
@@ -304,7 +305,7 @@ inputMSA=$WD/02_build_axes_Rev/sequences10basesRev.fasta
 $build_axes -v
 $build_axes -h
 
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -i $inputMSA -R1 1 -stat
@@ -374,7 +375,7 @@ $build_axes -i $inputMSA -R1 699051 -stat
 
 # building 2 axes with REF1=1  REF2=349526
   ```{sh}
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -v #version:0.1.8
@@ -384,8 +385,8 @@ more $LOG
     =======================================================================
     Info:
     = capasydis - version:                   0.1.8
-    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/sequences10basesRev.fasta
-    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+    = MSA input file:                        PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/sequences10basesRev.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
     => Number of sequences:                 1048576
     => Number of aligned positions:         10
     => Delta values:                         default
@@ -415,7 +416,7 @@ more $LOG
 # building 2 axes with REF1=1  REF3=699051
  |699051 | GGGGGGGGGG  | S10bnuco|
  ```{sh}
-output=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs
+output=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs
 mkdir -p $output
 LOG=$output/log.txt
 $build_axes -v #version:0.1.8
@@ -425,8 +426,8 @@ more $LOG
     =======================================================================
     Info:
     = capasydis - version:                   0.1.8
-    = MSA input file:                        PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/sequences10basesRev.fasta
-    = Data written to:                       PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output
+    = MSA input file:                        PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/sequences10basesRev.fasta
+    = Data written to:                       PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output
     .csv
     => Number of sequences:                 1048576
     => Number of aligned positions:         10
@@ -457,19 +458,19 @@ more $LOG
 # aggregating the info
 
 ```{sh}
-mkdir -p PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
+mkdir -p PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
 merge3D=PathToProject/CAPASYDIS/merge3D/bin
-FileR1R2=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
-FileR1R3=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
-mergedOutput=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
+FileR1R2=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv # R1 R2
+FileR1R3=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_As_R3_Gs/output.csv  # R1 R3
+mergedOutput=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv
             
 
 $merge3D -h
-$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/log.txt
+$merge3D -i $FileR1R2 -j $FileR1R3 -o $mergedOutput > PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/log.txt
 ```
     2026/05/11 14:35:45 Starting CSV merge and validation...
     2026/05/11 14:35:46 Reached end of both files after processing 1048576 rows in each file.
-    2026/05/11 14:35:46 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
+    2026/05/11 14:35:46 Processing complete. Wrote 1048576 records to 'PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3/output_R1_R2_R3.csv'.
     2026/05/11 14:35:46 Script finished successfully.
 
 
@@ -522,7 +523,7 @@ more Patterns.tsv
 
 
 ```{sh}
-WD=PathToProject/CAPASYDIS/Simulations/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
+WD=PathToProject/CAPASYDIS/M10bases/02_build_axes_Rev/output_build_axesv0.1.8_R1_R2_R3
 colorCSVTaxonomy=PathToProject/CAPASYDIS/colorCSVTaxonomy/bin/colorCSVTaxonomy_v0.1.3
 $colorCSVTaxonomy -h
 $colorCSVTaxonomy -v # version:0.1.3

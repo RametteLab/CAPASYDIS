@@ -1,0 +1,29 @@
+=======================================================================
+Info:
+= capasydis - version:			 0.1.8
+= MSA input file:			 /home/aramette/projects/DISCOMP/Simulations/01_create_sequences/sequences10bases.fasta
+= Data written to:			 /home/aramette/projects/DISCOMP/Simulations/02_build_axes/output_build_axesv0.1.8_R1_As_R2_Ts/output.csv
+=> Number of sequences:			1048576
+=> Number of aligned positions:		10
+=> Delta values:			 default
+=======================================================================
+Details:
+REF1 name: S0aaaaa
+REF1 number: 1
+- Most distant sequence to REF1:
+	- name: S10atxbh
+	- sequence nber: 349526
+	- value: 0.729335316
+--------------
+REF2 name: S10atxbh
+REF2 number: 349526
+- Most distant sequence to REF2:
+	- name: S0aaaaa
+	- sequence nber: 1
+	- value: 0.6691823747
+Timing:
+Started at:  2026-04-27 14:47:06
+Finished at: 2026-04-27 14:47:13
+Number of cores (-j): 95 
+Elapsed time: [31m6.967695137s[0m
+=======================================================================

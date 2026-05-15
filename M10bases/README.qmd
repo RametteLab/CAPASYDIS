@@ -10,8 +10,9 @@ go run create_sequences.go
 ```
 01_create_sequences.go
 The script creates all combinations of a n-base long sequence for the bases {'A', 'T', 'G', 'C'}.
-The headers reflect the number of mutations present in each sequence. E.g. 	
 For now the script is hard-coded for sequenceLength = 10 bases, with labelLength = 5. 
+The headers reflect the number of mutations present in each sequence. 
+For instance:
 	>S0aaaaa
     AAAAAAAAAA
     >S1aaaab

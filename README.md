@@ -13,7 +13,7 @@ Implementation in R of the CAPASYDIS main concepts and calculations.
 - **[NR99/](https://github.com/RametteLab/CAPASYDIS/tree/main/NR99)**  
     Workflow and scripts used for the NR99 analyses
 - **[M10bases/](https://github.com/RametteLab/CAPASYDIS/tree/main/M10bases)**  
-    Workflow and scripts used for the NR99 analyses
+    Workflow and scripts used for the analysis of the M10bases dataset (simulation of a fully-mutated 10-base long sequence)
 
 ## ADDITIONAL LINKS  
 **Software**  

@@ -73,7 +73,7 @@ func globalMatrixAudit(deltaPool []float64) {
 			radicand := int64(math.Round((float64(pos) + delta) * 100))
 			core := getSquareFreeCore(radicand)
 
-			combinationLabel := fmt.Sprintf("Pos %d with δ=%.2f", pos, delta)
+			combinationLabel := fmt.Sprintf("Pos %d with delta=%.2f", pos, delta)
 
 			if existingLabel, exists := coreMap[core]; exists {
 				// Avoid logging duplicates of the exact same pairings

@@ -16,13 +16,13 @@ Analysis of all possible position-delta combinations ...
 ⚠️ Audit failed: Found 7 potential structural dependencies.
 
 Square-Free Core   Combination A             Combination B            
-102                Pos 1 with δ=0.02         Pos 4 with δ=0.08        
-3                  Pos 1 with δ=0.08         Pos 5 with δ=0.07        
-78                 Pos 3 with δ=0.12         Pos 7 with δ=0.02        
-202                Pos 2 with δ=0.02         Pos 8 with δ=0.08        
-101                Pos 1 with δ=0.01         Pos 9 with δ=0.09        
-57                 Pos 5 with δ=0.13         Pos 9 with δ=0.12        
-7                  Pos 1 with δ=0.12         Pos 10 with δ=0.08       
+102                Pos 1 with delta=0.02         Pos 4 with delta=0.08        
+3                  Pos 1 with delta=0.08         Pos 5 with delta=0.07        
+78                 Pos 3 with delta=0.12         Pos 7 with delta=0.02        
+202                Pos 2 with delta=0.02         Pos 8 with delta=0.08        
+101                Pos 1 with delta=0.01         Pos 9 with delta=0.09        
+57                 Pos 5 with delta=0.13         Pos 9 with delta=0.12        
+7                  Pos 1 with delta=0.12         Pos 10 with delta=0.08       
 
 Insight: Because these combinations share a base, specific cross-position mutations could mimic each other.
 

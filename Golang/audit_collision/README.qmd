@@ -1,0 +1,41 @@
+---
+title: Global audit of collision of the scores
+---
+These scripts verify that the fundamental building blocks are independent given a specific set of delta values. 
+It simulates all 100 possible position-delta combinations and checks for any shared square-free cores, which would indicate potential structural dependencies under Besicovitch's Theorem.
+
+
+```{sh}
+#golang_1.24.5
+go mod init global_audit
+go mod tidy
+go run audit_collision_1D.go  
+```
+Analysis of all possible position-delta combinations ...
+
+⚠️ Audit failed: Found 7 potential structural dependencies.
+
+Square-Free Core   Combination A             Combination B            
+102                Pos 1 with δ=0.02         Pos 4 with δ=0.08        
+3                  Pos 1 with δ=0.08         Pos 5 with δ=0.07        
+78                 Pos 3 with δ=0.12         Pos 7 with δ=0.02        
+202                Pos 2 with δ=0.02         Pos 8 with δ=0.08        
+101                Pos 1 with δ=0.01         Pos 9 with δ=0.09        
+57                 Pos 5 with δ=0.13         Pos 9 with δ=0.12        
+7                  Pos 1 with δ=0.12         Pos 10 with δ=0.08       
+
+Insight: Because these combinations share a base, specific cross-position mutations could mimic each other.
+
+
+
+
+```{sh}
+go run audit_collision_2D.go  
+```
+✅ 2D geometric audit passed!
+
+Result: Zero multi-dimensional coordinate collisions found.
+Conclusion: While 1D vector projections contain 7 algebraic overlaps, mapping across orthogonal reference axes entirely disperses these dependencies into unique 2D coordinates.
+
+
+

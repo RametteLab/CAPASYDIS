@@ -2,7 +2,7 @@
 ===========================================================
 
 ## DESCRIPTION   
-This repository includes the workflow and scripts used to analyze the NR99 dataset presented in the study. 
+This repository includes the workflow and scripts used to analyze the NR99 and M10bases datasets presented in the accompanying study cited below. 
 The repository is organised as follows: 
 - **[R/](https://github.com/RametteLab/CAPASYDIS/tree/main/R)**   
 Implementation in R of the CAPASYDIS main concepts and calculations.
@@ -30,8 +30,8 @@ Implementation in R of the CAPASYDIS main concepts and calculations.
 - Seqverse of Bacteria: https://zenodo.org/records/17049222   
 - Seqverse of Eukaryota: https://zenodo.org/records/17049247   
 
-**Associated study**   
-[https://www.biorxiv.org/content/10.1101/2025.09.04.674223v2](https://www.biorxiv.org/content/10.1101/2025.09.04.674223v2)
+**Accompanying study**   
+[https://www.biorxiv.org/content/10.1101/2025.09.04.674223v3](https://www.biorxiv.org/content/10.1101/2025.09.04.674223v3)
 
 
 
